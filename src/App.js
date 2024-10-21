@@ -25,6 +25,7 @@ const App = () => {
         <Route path="/product/:productName" element={<ProductDetailPage />} />  {/* Product detail page */}
       </Routes>
     </Router>
+
   );
 };
 
