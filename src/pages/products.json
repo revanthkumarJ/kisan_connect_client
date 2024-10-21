@@ -1,0 +1,215 @@
+[
+    {
+        "id": "1",
+        "productName": "Paddy",
+        "category": "grains",
+        "description": "ddtffjttx gnfghf",
+        "price": 200,
+        "unit": "kg",
+        "stock": 44,
+        "harvestDate": "2024-09-01T00:00:00.000Z",
+        "expiryDate": "2024-09-15T00:00:00.000Z",
+        "farmingMethod": "Organic",
+        "deliveryTime": "2-3 days",
+        "userId": "66ded82861def8aa5acfd8d6",
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0WVVGYF1FSQKM8_92FZTTNjdMBKz_mZaxgA&s"
+      
+    },
+    {
+      "id":"2",
+      "productName": "Maize",
+      "category": "grains",
+      "description": "ddtffjttx gnfghf",
+      "price": 200,
+      "unit": "kg",
+      "stock": 44,
+      "harvestDate": "2024-09-01T00:00:00.000Z",
+      "expiryDate": "2024-09-15T00:00:00.000Z",
+      "farmingMethod": "Organic",
+      "deliveryTime": "2-3 days",
+      "userId": "66ded82861def8aa5acfd8d6",
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ416L2HNQlbyYhFdJPU-zjixKfAPtzVT3jew&s"
+     
+    },
+    {
+      "id": "3",
+      "productName": "Mirchi",
+      "category": "vegetables",
+      "description": "ddtffjttx gnfghf",
+      "price": 200,
+      "unit": "kg",
+      "stock": 44,
+      "harvestDate": "2024-09-01T00:00:00.000Z",
+      "expiryDate": "2024-09-15T00:00:00.000Z",
+      "farmingMethod": "Organic",
+      "deliveryTime": "2-3 days",
+      "userId": "66ded82861def8aa5acfd8d6",
+      "image": "https://organicbazar.net/cdn/shop/products/Untitled-design-12_58fc5ca9-ee11-432e-b30c-27855c9031da.jpg?v=1692878611"
+     
+    },
+    {
+      "id": "4",
+      "productName": "Paddy",
+        "category": "fgrains",
+        "description": "ddtffjttx gnfghf",
+        "price": 200,
+        "unit": "kg",
+        "stock": 44,
+        "harvestDate": "2024-09-01T00:00:00.000Z",
+        "expiryDate": "2024-09-15T00:00:00.000Z",
+        "farmingMethod": "Organic",
+        "deliveryTime": "2-3 days",
+        "userId": "66ded82861def8aa5acfd8d6",
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0WVVGYF1FSQKM8_92FZTTNjdMBKz_mZaxgA&s"
+      
+    },
+    {
+      "id": "5",
+      "productName": "Apples",
+      "category": "fruits",
+      "description": "ddtffjttx gnfghf",
+      "price": 200,
+      "unit": "kg",
+      "stock": 44,
+      "harvestDate": "2024-09-01T00:00:00.000Z",
+      "expiryDate": "2024-09-15T00:00:00.000Z",
+      "farmingMethod": "Organic",
+      "deliveryTime": "2-3 days",
+      "userId": "66ded82861def8aa5acfd8d6",
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6gi4yD9cFR17yzH8T67Emim9faN9jewvG7g&s"
+     
+    },
+    {
+      "id": "6",
+      "productName": "Banana",
+        "category": "fruits",
+        "description": "ddtffjttx gnfghf",
+        "price": 200,
+        "unit": "kg",
+        "stock": 44,
+        "harvestDate": "2024-09-01T00:00:00.000Z",
+        "expiryDate": "2024-09-15T00:00:00.000Z",
+        "farmingMethod": "Organic",
+        "deliveryTime": "2-3 days",
+        "userId": "66ded82861def8aa5acfd8d6",
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyrSbzURdLkTlkTqEEBrFKC0E62tYPertl8A&s"
+     
+    },
+    {
+      "id": "7",
+      "productName": "Grapes",
+        "category": "fruits",
+        "description": "ddtffjttx gnfghf",
+        "price": 200,
+        "unit": "kg",
+        "stock": 44,
+        "harvestDate": "2024-09-01T00:00:00.000Z",
+        "expiryDate": "2024-09-15T00:00:00.000Z",
+        "farmingMethod": "Organic",
+        "deliveryTime": "2-3 days",
+        "userId": "66ded82861def8aa5acfd8d6",
+      "image": "https://5.imimg.com/data5/SELLER/Default/2021/1/IX/TD/VD/8034916/fresh-grapes-export-quality-500x500.jpg"
+     
+    },
+    {
+      "id": "8",
+      "productName": "Apples",
+      "category": "fruits",
+      "description": "ddtffjttx gnfghf",
+      "price": 200,
+      "unit": "kg",
+      "stock": 44,
+      "harvestDate": "2024-09-01T00:00:00.000Z",
+      "expiryDate": "2024-09-15T00:00:00.000Z",
+      "farmingMethod": "Organic",
+      "deliveryTime": "2-3 days",
+      "userId": "66ded82861def8aa5acfd8d6",
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6gi4yD9cFR17yzH8T67Emim9faN9jewvG7g&s"
+  
+    },
+    {
+      "id": "9",
+      "productName": "Aloo",
+        "category": "vegetables",
+        "description": "ddtffjttx gnfghf",
+        "price": 200,
+        "unit": "kg",
+        "stock": 44,
+        "harvestDate": "2024-09-01T00:00:00.000Z",
+        "expiryDate": "2024-09-15T00:00:00.000Z",
+        "farmingMethod": "Organic",
+        "deliveryTime": "2-3 days",
+        "userId": "66ded82861def8aa5acfd8d6",
+      "image": "https://5.imimg.com/data5/BR/ON/MY-46120412/high-quality-fresh-potato.jpg"
+     
+    },
+   
+    {
+        "id": "10",
+        "productName": "Lady fingers",
+        "category": "vegetables",
+        "description": "ddtffjttx gnfghf",
+        "price": 200,
+        "unit": "kg",
+        "stock": 44,
+        "harvestDate": "2024-09-01T00:00:00.000Z",
+        "expiryDate": "2024-09-15T00:00:00.000Z",
+        "farmingMethod": "Organic",
+        "deliveryTime": "2-3 days",
+        "userId": "66ded82861def8aa5acfd8d6",
+        "image": " https://cdn.shopify.com/s/files/1/0089/7672/8119/files/image4_3591ec0a-6330-433e-85ec-7b522773570a_large.jpg?v=1573214773"
+        
+      },
+   
+      {
+          "id": "11",
+          "productName": "Tomatos",
+          "category": "vegetables",
+          "description": "ddtffjttx gnfghf",
+          "price": 200,
+          "unit": "kg",
+          "stock": 44,
+          "harvestDate": "2024-09-01T00:00:00.000Z",
+          "expiryDate": "2024-09-15T00:00:00.000Z",
+          "farmingMethod": "Organic",
+          "deliveryTime": "2-3 days",
+          "userId": "66ded82861def8aa5acfd8d6",
+          "image": "https://www.shutterstock.com/image-photo/containers-colorful-tomatoes-farmers-market-260nw-1813108486.jpg"
+          
+        },
+   
+        {
+            "id": "12",
+            "productName": "Wheat",
+            "category": "grains",
+            "description": "ddtffjttx gnfghf",
+            "price": 200,
+            "unit": "kg",
+            "stock": 44,
+            "harvestDate": "2024-09-01T00:00:00.000Z",
+            "expiryDate": "2024-09-15T00:00:00.000Z",
+            "farmingMethod": "Organic",
+            "deliveryTime": "2-3 days",
+            "userId": "66ded82861def8aa5acfd8d6",
+            "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYNja79Be6lhaxDHa-1WHIhJ45KqTzDTSCHw&s"
+            
+          },
+   
+          {
+              "id": "13",
+              "productName": "Brinjas",
+              "category": "vegetables",
+              "description": "ddtffjttx gnfghf",
+              "price": 200,
+              "unit": "kg",
+              "stock": 44,
+              "harvestDate": "2024-09-01T00:00:00.000Z",
+              "expiryDate": "2024-09-15T00:00:00.000Z",
+              "farmingMethod": "Organic",
+              "deliveryTime": "2-3 days",
+              "userId": "66ded82861def8aa5acfd8d6",
+              "image": "https://www.shutterstock.com/image-photo/baby-purple-eggplant-bulk-market-260nw-1492492520.jpg"
+              
+            }
+]
+  
