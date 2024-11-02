@@ -12,11 +12,13 @@ import {
   useTheme,
 } from '@mui/material';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const navigate=useNavigate()
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -48,10 +50,10 @@ const CartPage = () => {
     fetchCartItems();
   }, []);
 
-  const handleBuyNow = (itemId) => {
-    setSnackbarMessage(`Buying item with ID: ${itemId}`);
-    setSnackbarOpen(true);
+  const handleBuyNow = (productId, quantity) => {
+    navigate(`/place-order?productId=${productId}&quantity=${quantity}`);
   };
+  
 
   const handleDeleteFromCart = async (cartItemId) => {
     try {
@@ -61,7 +63,7 @@ const CartPage = () => {
           'auth-token': `${token}`,
         },
       });
-  
+
       if (response.status === 200) {
         // Filter out the deleted item from cartItems in the frontend
         setCartItems(cartItems.filter(item => item.productId !== cartItemId));
@@ -75,30 +77,45 @@ const CartPage = () => {
     }
     setSnackbarOpen(true);
   };
-  
+
 
   return (
-    <Container 
-      maxWidth={false} 
-      disableGutters 
-      style={{ marginTop: '2rem' }} 
+    <Container
+      maxWidth={false}
+      disableGutters
+      style={{ marginTop: '2rem' }}
     >
-      <Typography 
-        variant="h4" 
-        gutterBottom 
-        style={{ color: 'black', padding: '16px', textAlign: 'center' }}
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        sx={{ padding: '16px' }}
       >
-        Your Cart
-      </Typography>
-      <Box 
-        display="flex" 
-        flexDirection="row" 
-        flexWrap="wrap" 
+        <Typography
+          variant="h4"
+          gutterBottom
+          style={{ color: 'black', textAlign: 'center' }}
+        >
+          Your Cart
+        </Typography>
+        <Box display="flex" flexDirection="column" alignItems="flex-end">
+          <Button variant="contained" sx={{ mb: 1 }}>
+            On the Way
+          </Button>
+          <Button variant="contained">
+            Previous Orders
+          </Button>
+        </Box>
+      </Box>
+      <Box
+        display="flex"
+        flexDirection="row"
+        flexWrap="wrap"
         justifyContent="space-between"
         width="100%"
       >
         {cartItems.map((cartItem) => (
-          <Box 
+          <Box
             key={cartItem._id}
             sx={{
               display: 'flex',
@@ -107,9 +124,9 @@ const CartPage = () => {
               padding: '10px',
             }}
           >
-            <Card 
-              sx={{ 
-                display: 'flex', 
+            <Card
+              sx={{
+                display: 'flex',
                 flexDirection: 'row',
                 width: '100%',
                 backgroundColor: '#f5f5f5',  // Soft whitish background
@@ -123,26 +140,26 @@ const CartPage = () => {
                 alt={cartItem.product.productName}
                 image={`data:image/png;base64,${cartItem.product.image}`}
                 title={cartItem.product.productName}
-                sx={{ 
-                  width: '50%', 
-                  height: 200, 
-                  objectFit: 'cover', 
-                  padding: '10px' 
+                sx={{
+                  width: '50%',
+                  height: 200,
+                  objectFit: 'cover',
+                  padding: '10px'
                 }}
               />
-              <CardContent 
-                sx={{ 
-                  flex: 1, 
-                  display: 'flex', 
+              <CardContent
+                sx={{
+                  flex: 1,
+                  display: 'flex',
                   flexDirection: 'column',
                   padding: '16px',
                   justifyContent: 'space-between',
                 }}
               >
                 <Box>
-                  <Typography 
-                    variant="h6" 
-                    noWrap 
+                  <Typography
+                    variant="h6"
+                    noWrap
                     sx={{ fontWeight: 'bold', marginBottom: '8px' }}
                   >
                     {cartItem.product.productName}
@@ -156,27 +173,27 @@ const CartPage = () => {
                   <Typography variant="body1">
                     Price: ₹{cartItem.quantity * cartItem.product.price}
                   </Typography>
-                  <Typography 
-                    variant="body1" 
+                  <Typography
+                    variant="body1"
                     color={cartItem.product.stock > 0 ? 'green' : 'red'}
                   >
                     {cartItem.product.stock > 0 ? 'In Stock' : 'Out of Stock'}
                   </Typography>
                 </Box>
-                <Box 
-                  sx={{ 
-                    display: 'flex', 
-                    justifyContent: 'space-between', 
-                    marginTop: '16px' 
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    marginTop: '16px'
                   }}
                 >
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={() => handleBuyNow(cartItem.product._id)}
+                    onClick={() => handleBuyNow(cartItem.product._id,cartItem.quantity)}
                     disabled={cartItem.product.stock === 0}
-                    sx={{ 
-                      flex: 1, 
+                    sx={{
+                      flex: 1,
                       padding: '10px',  // Ensure buttons have enough padding
                       marginRight: '10px',  // Add margin between buttons
                       fontSize: '0.9rem',  // Adjust font size
@@ -188,9 +205,9 @@ const CartPage = () => {
                     variant="outlined"
                     color="secondary"
                     onClick={() => handleDeleteFromCart(cartItem.productId)}
-                    sx={{ 
-                      flex: 1, 
-                      padding: '10px', 
+                    sx={{
+                      flex: 1,
+                      padding: '10px',
                       fontSize: '0.9rem',
                     }}
                   >

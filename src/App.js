@@ -10,6 +10,8 @@ import ProductPage from './pages/ProductsPage'; // Import the product listing pa
 import ProductDetailPage from './pages/ProductDetailPage'; // Import the product detail page
 import { AuthProvider } from './pages/AuthContext';
 import SearchResults from './pages/SearchResultsPage';
+import PlaceOrderPage from './pages/PlaceOrder';
+
 
 const App = () => {
   return (
@@ -26,6 +28,8 @@ const App = () => {
           {/* Product routes */}
           <Route path="/products" element={<ProductPage />} />  {/* Product listing page */}
           <Route path="/product/:productName" element={<ProductDetailPage />} />  {/* Product detail page */}
+
+          <Route path="/place-order" element={<PlaceOrderPage />} />
         </Routes>
       </Router>
     </AuthProvider>

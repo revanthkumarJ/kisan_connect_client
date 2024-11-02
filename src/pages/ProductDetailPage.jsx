@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, Button, CardMedia, FormControl, InputLabel, Select, MenuItem, Snackbar, Alert } from '@mui/material';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const ProductDetailPage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const product = location.state ? location.state.product : null;
-  const [quantity, setQuantity] = useState(1);
+
+  // Extract quantity from the URL query parameters if provided
+  const queryParams = new URLSearchParams(location.search);
+  const initialQuantity = parseInt(queryParams.get('quantity'), 10) || 1;
+
+  const [quantity, setQuantity] = useState(initialQuantity);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
   const handleSnackbarClose = () => {
@@ -50,7 +56,7 @@ const ProductDetailPage = () => {
   };
 
   const handleBuyNow = () => {
-    console.log(`Buying ${quantity} ${product.unit} of ${product.productName}.`);
+    navigate(`/place-order?productId=${product._id}&quantity=${quantity}`);
   };
 
   const totalPrice = (quantity * product.price).toFixed(2);
