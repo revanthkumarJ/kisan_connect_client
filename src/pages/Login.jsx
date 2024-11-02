@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { Container, Tab, Tabs, TextField, Button, Typography, Box, Snackbar } from '@mui/material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from './AuthContext';
 
 const LoginPage = () => {
+  const { login, logout, isLoggedIn } = useAuth();
+
   const [activeTab, setActiveTab] = useState(0); // 0 for Sign In, 1 for Sign Up
   const [signInData, setSignInData] = useState({ email: '', password: '' });
   const [signUpData, setSignUpData] = useState({ name: '', email: '', password: '', phoneNumber: '' });
@@ -30,8 +33,10 @@ const LoginPage = () => {
           'Content-Type': 'application/json',
         },
       });
-
-      localStorage.setItem('token', response.data.token); // Store the token in local storage
+      // console.log(response)
+      // localStorage.setItem('token', response.data.token); 
+      // localStorage.setItem('userId',response.data.user._id)
+      login(response.data.user,response.data.token)
       setSnackbarMessage('Logged in successfully!');
       setSnackbarOpen(true);
 

@@ -2,13 +2,14 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { AppBar, Toolbar, Typography, Button, Box, TextField, IconButton } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'; // Import profile icon
+import { useAuth } from '../pages/AuthContext';
 
 const Navbar = () => {
+  const { isLoggedIn } = useAuth();
+
   const location = useLocation();
 
-  // Check if the token exists in localStorage
-  const token = localStorage.getItem('token');
-
+ 
   // Set the color conditionally based on the current route
   const appBarColor = location.pathname === '/' ? '#795548' : '#4CAF50'; // Brown for home, green for others
 
@@ -29,7 +30,7 @@ const Navbar = () => {
           />
           
           {/* Conditionally render Login or Profile based on the token */}
-          {token ? (
+          {isLoggedIn ? (
             <IconButton sx={{ color: 'white' }} component={Link} to="/profile">
               <AccountCircleIcon />
             </IconButton>

@@ -156,7 +156,7 @@ const styles = {
   container: {
     padding: '3rem',
     backgroundColor: '#f0f4f8',
-    minHeight: '100vh',
+    
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',

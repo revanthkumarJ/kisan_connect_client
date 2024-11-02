@@ -2,8 +2,11 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Box, Typography, Button, Avatar, Card, CardContent } from '@mui/material';
 import { useNavigate } from 'react-router-dom'; // Use useNavigate instead of useHistory
+import { useAuth } from './AuthContext';
 
 const ProfilePage = () => {
+  const { login, logout, isLoggedIn } = useAuth();
+
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -31,7 +34,7 @@ const ProfilePage = () => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('token'); // Clear the token
+    logout()
     navigate('/login'); // Redirect to login page
   };
 
@@ -39,13 +42,14 @@ const ProfilePage = () => {
   if (error) return <Typography variant="h6">{error}</Typography>;
   if (!user) return <Typography variant="h6">User not found.</Typography>;
 
-  const formattedAddress = `
+  const formattedAddress = (user?.address)?`
     ${user.address.doorNo},
     ${user.address.area},
     ${user.address.district}, ${user.address.pincode}
     ${user.address.landmark},
     ${user.address.state}
-  `;
+  `:"No Address Provided"
+  ;
 
   return (
     <Box sx={{ padding: '2rem', display: 'flex', justifyContent: 'space-between' }}>
