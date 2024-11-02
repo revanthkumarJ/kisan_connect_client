@@ -21,7 +21,7 @@ export function AuthProvider({ children }) {
   // Function to log out
   const logout = () => {
     localStorage.removeItem('user');
-    localStorage.removeItem('authToken');
+    localStorage.removeItem('token');
     setIsLoggedIn(false);
   };
 

@@ -9,6 +9,7 @@ import Profile from './pages/Profile'; // Adjust the path as necessary
 import ProductPage from './pages/ProductsPage'; // Import the product listing page
 import ProductDetailPage from './pages/ProductDetailPage'; // Import the product detail page
 import { AuthProvider } from './pages/AuthContext';
+import SearchResults from './pages/SearchResultsPage';
 
 const App = () => {
   return (
@@ -21,7 +22,7 @@ const App = () => {
           <Route path="/become-seller" element={<BecomeSeller />} />
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<Profile />} />
-
+          <Route path="/search" element={<SearchResults />} />
           {/* Product routes */}
           <Route path="/products" element={<ProductPage />} />  {/* Product listing page */}
           <Route path="/product/:productName" element={<ProductDetailPage />} />  {/* Product detail page */}

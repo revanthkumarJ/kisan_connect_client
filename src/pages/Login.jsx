@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 
 const LoginPage = () => {
-  const { login, logout, isLoggedIn } = useAuth();
+  const { login } = useAuth();
 
   const [activeTab, setActiveTab] = useState(0); // 0 for Sign In, 1 for Sign Up
   const [signInData, setSignInData] = useState({ email: '', password: '' });
@@ -36,6 +36,7 @@ const LoginPage = () => {
       // console.log(response)
       // localStorage.setItem('token', response.data.token); 
       // localStorage.setItem('userId',response.data.user._id)
+      console.log(response.data.user)
       login(response.data.user,response.data.token)
       setSnackbarMessage('Logged in successfully!');
       setSnackbarOpen(true);

@@ -37,6 +37,7 @@ const CartPage = () => {
           return { ...item, product: productResponse.data.item };
         }));
         setCartItems(itemsWithDetails);
+        // console.log(itemsWithDetails)
       } catch (error) {
         console.error(error);
         setSnackbarMessage('Failed to load cart items');
@@ -55,20 +56,26 @@ const CartPage = () => {
   const handleDeleteFromCart = async (cartItemId) => {
     try {
       const token = localStorage.getItem('token');
-      const res=await axios.delete(`http://localhost:3000/user/deleteCardItem/${cartItemId}`, {
+      const response = await axios.delete(`http://localhost:3000/user/deleteCardItem/${cartItemId}`, {
         headers: {
           'auth-token': `${token}`,
         },
       });
-      console.log(res);
-      setCartItems(cartItems.filter(item => item._id !== cartItemId));
-      setSnackbarMessage('Item removed from cart');
+  
+      if (response.status === 200) {
+        // Filter out the deleted item from cartItems in the frontend
+        setCartItems(cartItems.filter(item => item.productId !== cartItemId));
+        setSnackbarMessage('Item removed from cart');
+      } else {
+        setSnackbarMessage('Failed to remove item from cart');
+      }
     } catch (error) {
       console.error(error);
       setSnackbarMessage('Failed to remove item from cart');
     }
     setSnackbarOpen(true);
   };
+  
 
   return (
     <Container 

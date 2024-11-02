@@ -1,7 +1,7 @@
-
-
-
 import React, { useState, useRef } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { Snackbar, Alert } from '@mui/material';
 
 const BecomeSeller = () => {
   const [farmLocation, setFarmLocation] = useState('');
@@ -9,23 +9,58 @@ const BecomeSeller = () => {
   const [experience, setExperience] = useState('');
   const [farmPhoto, setFarmPhoto] = useState(null);
   const [proofPhoto, setProofPhoto] = useState(null);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState(''); // Add state for snackbar message
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success'); // Add state for snackbar severity
+  const navigate = useNavigate();
 
   // Create refs for the file inputs
   const farmPhotoInputRef = useRef(null);
   const proofPhotoInputRef = useRef(null);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log({
-      farmLocation,
-      farmSize,
-      experience,
-      farmPhoto,
-      proofPhoto,
-    });
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (!user || !user._id) {
+        throw new Error("User is not logged in.");
+      }
+
+      // Set up FormData for the request
+      const formData = new FormData();
+      formData.append('userId', user._id);
+      formData.append('farmLocation', farmLocation);
+      formData.append('farmSize', farmSize);
+      formData.append('experience', experience);
+
+      if (farmPhotoInputRef.current.files[0]) {
+        formData.append('farmPhoto', farmPhotoInputRef.current.files[0]);
+      }
+      if (proofPhotoInputRef.current.files[0]) {
+        formData.append('proofPhoto', proofPhotoInputRef.current.files[0]);
+      }
+
+      // Send POST request
+      await axios.post('http://localhost:3000/admin/farmer/addFarmerApplication', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+
+      // Show success message in snackbar and redirect after 2 seconds
+      setSnackbarMessage('Request Submitted!');
+      setSnackbarSeverity('success');
+      setOpenSnackbar(true);
+      setTimeout(() => {
+        navigate('/');
+      }, 2000);
+    } catch (error) {
+      // Show error message in snackbar
+      setSnackbarMessage(error.response?.data?.message || 'Error submitting farmer application');
+      setSnackbarSeverity('error');
+      setOpenSnackbar(true);
+      console.error('Error submitting farmer application:', error);
+    }
   };
 
-  // Handles the file input and shows the selected image with the ability to remove it
   const handleImageChange = (event, setImage) => {
     const file = event.target.files[0];
     if (file) {
@@ -33,16 +68,14 @@ const BecomeSeller = () => {
     }
   };
 
-  // Removes the selected image and clears the file input to prevent caching
   const handleRemoveImage = (setImage, inputRef) => {
     setImage(null);
-    inputRef.current.value = ''; // Reset file input value to clear cache
+    inputRef.current.value = '';
   };
 
-  // Handle integer-only inputs for experience and farm size
   const handleIntegerChange = (e, setter) => {
     const value = e.target.value;
-    if (/^\d*$/.test(value)) {  // Ensure only numbers (no decimals or negative)
+    if (/^\d*$/.test(value)) {
       setter(value);
     }
   };
@@ -71,7 +104,7 @@ const BecomeSeller = () => {
               type="number"
               placeholder="Farm Size (in acres)"
               value={farmSize}
-              onChange={(e) => handleIntegerChange(e, setFarmSize)} // Ensure only integer input
+              onChange={(e) => handleIntegerChange(e, setFarmSize)}
               required
               style={styles.input}
             />
@@ -83,7 +116,7 @@ const BecomeSeller = () => {
               type="number"
               placeholder="Experience (in years)"
               value={experience}
-              onChange={(e) => handleIntegerChange(e, setExperience)} // Ensure only integer input
+              onChange={(e) => handleIntegerChange(e, setExperience)}
               required
               style={styles.input}
             />
@@ -97,7 +130,7 @@ const BecomeSeller = () => {
             <input
               type="file"
               id="farmPhoto"
-              ref={farmPhotoInputRef} // Use ref for farmPhoto input
+              ref={farmPhotoInputRef}
               accept="image/jpeg, image/png"
               onChange={(e) => handleImageChange(e, setFarmPhoto)}
               style={styles.input}
@@ -124,7 +157,7 @@ const BecomeSeller = () => {
             <input
               type="file"
               id="proofPhoto"
-              ref={proofPhotoInputRef} // Use ref for proofPhoto input
+              ref={proofPhotoInputRef}
               accept="image/jpeg, image/png"
               onChange={(e) => handleImageChange(e, setProofPhoto)}
               style={styles.input}
@@ -148,6 +181,17 @@ const BecomeSeller = () => {
           </button>
         </form>
       </div>
+      
+      {/* Snackbar for submission status */}
+      <Snackbar
+        open={openSnackbar}
+        onClose={() => setOpenSnackbar(false)}
+        autoHideDuration={3000}
+      >
+        <Alert onClose={() => setOpenSnackbar(false)} severity={snackbarSeverity} sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
@@ -156,7 +200,6 @@ const styles = {
   container: {
     padding: '3rem',
     backgroundColor: '#f0f4f8',
-    
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
