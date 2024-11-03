@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { AppBar, Toolbar, Typography, Button, Box, TextField, IconButton } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, Box, TextField, IconButton,Switch } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import logo from '../assets/logo.jpg';
 import { debounce } from 'lodash';
+import { useAuth } from '../pages/AuthContext';
 
 const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
+  const { isLoggedIn, mode, toggle} = useAuth();
 
   // Determine the app bar color based on the location pathname
   const appBarColor = location.pathname === '/' ? '#795548' : '#4CAF50';
@@ -98,6 +100,7 @@ const Navbar = () => {
               Login
             </Button>
           )}
+          <Switch checked={mode === 'dark'} onChange={toggle} />
         </Box>
       </Toolbar>
     </AppBar>

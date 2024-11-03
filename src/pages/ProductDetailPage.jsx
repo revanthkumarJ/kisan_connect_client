@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Box, Typography, Button, CardMedia, FormControl, InputLabel, Select, MenuItem, Snackbar, Alert } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from './AuthContext';
 
 const ProductDetailPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const product = location.state ? location.state.product : null;
+  const { mode } = useAuth();
 
   // Extract quantity from the URL query parameters if provided
   const queryParams = new URLSearchParams(location.search);
@@ -61,8 +63,19 @@ const ProductDetailPage = () => {
 
   const totalPrice = (quantity * product.price).toFixed(2);
 
+  const pageStyles = {
+    backgroundColor: mode === 'light' ? '#f5f5f5' : '#303030',
+    color: mode === 'light' ? '#000' : '#fff',
+    height:"85vh"
+  };
+
+  const cardStyles = {
+    backgroundColor: mode === 'light' ? '#fff' : '#424242',
+    color: mode === 'light' ? '#000' : '#fff',
+  };
+
   return (
-    <Box sx={{ padding: '2rem', backgroundColor: '#f5f5f5' }}>
+    <Box sx={{ padding: '2rem', ...pageStyles }}>
       <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: '2rem' }}>
         <Box sx={{ flex: '1' }}>
           <CardMedia
@@ -76,8 +89,8 @@ const ProductDetailPage = () => {
               transition: 'transform 0.3s, box-shadow 0.3s',
               '&:hover': {
                 transform: 'scale(1.05)',
-                boxShadow: '0 8px 30px rgba(0, 0, 0, 0.2)',
-              },
+                boxShadow: mode === 'light' ? '0 8px 30px rgba(0, 0, 0, 0.2)' : '0 8px 30px rgba(255, 255, 255, 0.2)',
+              }
             }}
           />
         </Box>
@@ -86,41 +99,41 @@ const ProductDetailPage = () => {
           sx={{
             flex: '1',
             padding: '1.5rem',
-            backgroundColor: '#fff',
             borderRadius: '8px',
             boxShadow: 3,
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
             minHeight: '100%',
+            ...cardStyles,
           }}
         >
           <Box>
             <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
               {product.productName}
             </Typography>
-            <Typography variant="body1" color="text.secondary" gutterBottom>
+            <Typography variant="body1" sx={{color: mode === 'light' ? '#000' : '#fff'}} gutterBottom>
               {product.description}
             </Typography>
             <Typography variant="h5" component="h2" gutterBottom sx={{ color: '#f44336' }}>
               RS. {product.price.toFixed(2)} per {product.unit}
             </Typography>
-            <Typography variant="body1" color="text.secondary">
+            <Typography variant="body1">
               Category: {product.category}
             </Typography>
-            <Typography variant="body1" color="text.secondary">
+            <Typography variant="body1">
               Stock: {product.stock}
             </Typography>
-            <Typography variant="body1" color="text.secondary">
+            <Typography variant="body1">
               Harvest Date: {new Date(product.harvestDate).toLocaleDateString()}
             </Typography>
-            <Typography variant="body1" color="text.secondary">
+            <Typography variant="body1">
               Expiry Date: {new Date(product.expiryDate).toLocaleDateString()}
             </Typography>
-            <Typography variant="body1" color="text.secondary">
+            <Typography variant="body1">
               Farming Method: {product.farmingMethod}
             </Typography>
-            <Typography variant="body1" color="text.secondary">
+            <Typography variant="body1">
               Delivery Time: {product.deliveryTime}
             </Typography>
           </Box>

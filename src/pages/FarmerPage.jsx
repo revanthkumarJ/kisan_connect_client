@@ -20,13 +20,17 @@ import {
     IconButton,
     Snackbar,
     Alert,
+    useTheme
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
+import { useAuth } from './AuthContext';
 
 const FarmerPage = () => {
+    const { mode } = useAuth()
+    const theme = useTheme();
     const [products, setProducts] = useState([]);
     const [openDialog, setOpenDialog] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
@@ -35,6 +39,7 @@ const FarmerPage = () => {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -149,10 +154,14 @@ const FarmerPage = () => {
     };
 
     return (
-        <div style={{ padding: "20px" }}>
+        <div style={{
+            padding: "20px",
+            backgroundColor: mode === 'dark' ? theme.palette.grey[900] : theme.palette.grey[100],
+            color: mode === 'dark' ? 'white' : 'black', // Overall text color
+        }}>
             <AppBar position="static" color="primary">
                 <Toolbar>
-                    <Typography variant="h6" style={{ flexGrow: 1 }}>
+                    <Typography variant="h6" style={{ flexGrow: 1, color: mode === 'dark' ? 'white' : 'black' }}>
                         Farmer Product Management
                     </Typography>
                     <IconButton color="inherit" onClick={() => handleOpenDialog()}>
@@ -164,7 +173,7 @@ const FarmerPage = () => {
             <Grid container spacing={4} style={{ marginTop: "20px" }}>
                 {products.map((product) => (
                     <Grid item xs={12} sm={6} md={4} key={product._id}>
-                        <Card elevation={3} style={{ borderRadius: '8px' }}>
+                        <Card elevation={3} style={{ borderRadius: '8px', backgroundColor: mode === 'dark' ? '#424242' : 'white' }}>
                             <CardMedia
                                 component="img"
                                 height="200"
@@ -173,15 +182,33 @@ const FarmerPage = () => {
                                 style={{ borderTopLeftRadius: '8px', borderTopRightRadius: '8px' }}
                             />
                             <CardContent>
-                                <Typography variant="h6" gutterBottom>{product.productName}</Typography>
-                                <Typography color="textSecondary">Category: {product.category}</Typography>
-                                <Typography variant="body2" color="textSecondary">Description: {product.description}</Typography>
-                                <Typography variant="body1" color="textPrimary">Price: ₹{product.price} / {product.unit}</Typography>
-                                <Typography variant="body2" color="textSecondary">Stock: {product.stock}</Typography>
-                                <Typography variant="body2" color="textSecondary">Harvest Date: {new Date(product.harvestDate).toLocaleDateString()}</Typography>
-                                <Typography variant="body2" color="textSecondary">Expiry Date: {new Date(product.expiryDate).toLocaleDateString()}</Typography>
-                                <Typography variant="body2" color="textSecondary">Farming Method: {product.farmingMethod}</Typography>
-                                <Typography variant="body2" color="textSecondary">Delivery Time: {product.deliveryTime}</Typography>
+                                <Typography variant="h6" gutterBottom style={{ color: mode === 'dark' ? 'white' : 'black' }}>
+                                    {product.productName}
+                                </Typography>
+                                <Typography color={mode === 'dark' ? 'white' : 'textSecondary'}>
+                                    Category: {product.category}
+                                </Typography>
+                                <Typography variant="body2" color={mode === 'dark' ? 'white' : 'textSecondary'}>
+                                    Description: {product.description}
+                                </Typography>
+                                <Typography variant="body1" color={mode === 'dark' ? 'white' : 'textPrimary'}>
+                                    Price: ₹{product.price} / {product.unit}
+                                </Typography>
+                                <Typography variant="body2" color={mode === 'dark' ? 'white' : 'textSecondary'}>
+                                    Stock: {product.stock}
+                                </Typography>
+                                <Typography variant="body2" color={mode === 'dark' ? 'white' : 'textSecondary'}>
+                                    Harvest Date: {new Date(product.harvestDate).toLocaleDateString()}
+                                </Typography>
+                                <Typography variant="body2" color={mode === 'dark' ? 'white' : 'textSecondary'}>
+                                    Expiry Date: {new Date(product.expiryDate).toLocaleDateString()}
+                                </Typography>
+                                <Typography variant="body2" color={mode === 'dark' ? 'white' : 'textSecondary'}>
+                                    Farming Method: {product.farmingMethod}
+                                </Typography>
+                                <Typography variant="body2" color={mode === 'dark' ? 'white' : 'textSecondary'}>
+                                    Delivery Time: {product.deliveryTime}
+                                </Typography>
                                 <div style={{ marginTop: '10px' }}>
                                     <Button
                                         variant="contained"
@@ -209,17 +236,17 @@ const FarmerPage = () => {
 
             {/* Dialog for Adding/Editing Product */}
             <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="sm" fullWidth>
-                <AppBar position="relative">
+                <AppBar position="relative" style={{ backgroundColor: mode === 'dark' ? '#424242' : theme.palette.primary.main }}>
                     <Toolbar>
                         <IconButton edge="start" color="inherit" onClick={() => setOpenDialog(false)} aria-label="close">
                             <CloseIcon />
                         </IconButton>
-                        <Typography variant="h6" style={{ flexGrow: 1 }}>
+                        <Typography variant="h6" style={{ flexGrow: 1, color: mode === 'dark' ? 'white' : 'black' }}>
                             {isEditing ? "Edit Product" : "Add Product"}
                         </Typography>
                     </Toolbar>
                 </AppBar>
-                <DialogContent>
+                <DialogContent style={{ backgroundColor: mode === 'dark' ? '#424242' : 'white', color: mode === 'dark' ? 'white' : 'black' }}>
                     <TextField
                         label="Product Name"
                         value={currentProduct.productName || ''}
@@ -227,14 +254,22 @@ const FarmerPage = () => {
                         fullWidth
                         margin="normal"
                         variant="outlined"
+                        InputLabelProps={{ style: { color: mode === 'dark' ? 'white' : 'black' } }} // Label color adjustment
+                        InputProps={{
+                            style: {
+                                color: mode === 'dark' ? 'white' : 'black', // Font color for input text
+                                backgroundColor: mode === 'dark' ? '#616161' : 'white', // Background color for input
+                            },
+                        }}
                     />
                     <FormControl fullWidth margin="normal" variant="outlined">
-                        <InputLabel id="product-category-label">Category</InputLabel>
+                        <InputLabel id="product-category-label" style={{ color: mode === 'dark' ? 'white' : 'black' }}>Category</InputLabel>
                         <Select
                             labelId="product-category-label"
                             value={currentProduct.category || ''}
                             onChange={(e) => setCurrentProduct({ ...currentProduct, category: e.target.value })}
-                            label="Category" // This connects the label and select
+                            label="Category"
+                            style={{ color: mode === 'dark' ? 'white' : 'black', backgroundColor: mode === 'dark' ? '#616161' : 'white' }} // Select color adjustment
                         >
                             <MenuItem value="Fruits">Fruits</MenuItem>
                             <MenuItem value="Vegetables">Vegetables</MenuItem>
@@ -249,6 +284,13 @@ const FarmerPage = () => {
                         fullWidth
                         margin="normal"
                         variant="outlined"
+                        InputLabelProps={{ style: { color: mode === 'dark' ? 'white' : 'black' } }} // Label color adjustment
+                        InputProps={{
+                            style: {
+                                color: mode === 'dark' ? 'white' : 'black', // Font color for input text
+                                backgroundColor: mode === 'dark' ? '#616161' : 'white', // Background color for input
+                            },
+                        }}
                     />
                     <TextField
                         label="Price"
@@ -258,14 +300,22 @@ const FarmerPage = () => {
                         fullWidth
                         margin="normal"
                         variant="outlined"
+                        InputLabelProps={{ style: { color: mode === 'dark' ? 'white' : 'black' } }} // Label color adjustment
+                        InputProps={{
+                            style: {
+                                color: mode === 'dark' ? 'white' : 'black',
+                                backgroundColor: mode === 'dark' ? '#616161' : 'white',
+                            },
+                        }}
                     />
                     <FormControl fullWidth margin="normal" variant="outlined">
-                        <InputLabel id="product-category-label">Unit</InputLabel>
+                        <InputLabel id="product-unit-label" style={{ color: mode === 'dark' ? 'white' : 'black' }}>Unit</InputLabel>
                         <Select
-                            labelId="product-category-label"
+                            labelId="product-unit-label"
                             value={currentProduct.unit || ''}
                             onChange={(e) => setCurrentProduct({ ...currentProduct, unit: e.target.value })}
-                            label="Category" 
+                            label="Unit"
+                            style={{ color: mode === 'dark' ? 'white' : 'black', backgroundColor: mode === 'dark' ? '#616161' : 'white' }} // Select color adjustment
                         >
                             <MenuItem value="kg">kg</MenuItem>
                             <MenuItem value="liter">litre</MenuItem>
@@ -280,6 +330,13 @@ const FarmerPage = () => {
                         fullWidth
                         margin="normal"
                         variant="outlined"
+                        InputLabelProps={{ style: { color: mode === 'dark' ? 'white' : 'black' } }} // Label color adjustment
+                        InputProps={{
+                            style: {
+                                color: mode === 'dark' ? 'white' : 'black',
+                                backgroundColor: mode === 'dark' ? '#616161' : 'white',
+                            },
+                        }}
                     />
                     <TextField
                         label="Harvest Date"
@@ -288,8 +345,14 @@ const FarmerPage = () => {
                         onChange={(e) => setCurrentProduct({ ...currentProduct, harvestDate: e.target.value })}
                         fullWidth
                         margin="normal"
-                        InputLabelProps={{ shrink: true }}
+                        InputLabelProps={{ shrink: true, style: { color: mode === 'dark' ? 'white' : 'black' } }} // Label color adjustment
                         variant="outlined"
+                        InputProps={{
+                            style: {
+                                color: mode === 'dark' ? 'white' : 'black',
+                                backgroundColor: mode === 'dark' ? '#616161' : 'white',
+                            },
+                        }}
                     />
                     <TextField
                         label="Expiry Date"
@@ -298,21 +361,26 @@ const FarmerPage = () => {
                         onChange={(e) => setCurrentProduct({ ...currentProduct, expiryDate: e.target.value })}
                         fullWidth
                         margin="normal"
-                        InputLabelProps={{ shrink: true }}
+                        InputLabelProps={{ shrink: true, style: { color: mode === 'dark' ? 'white' : 'black' } }} // Label color adjustment
                         variant="outlined"
+                        InputProps={{
+                            style: {
+                                color: mode === 'dark' ? 'white' : 'black',
+                                backgroundColor: mode === 'dark' ? '#616161' : 'white',
+                            },
+                        }}
                     />
                     <FormControl fullWidth margin="normal" variant="outlined">
-                        <InputLabel id="product-category-label">Farming Method</InputLabel>
+                        <InputLabel id="product-farming-method-label" style={{ color: mode === 'dark' ? 'white' : 'black' }}>Farming Method</InputLabel>
                         <Select
-                            labelId="product-category-label"
+                            labelId="product-farming-method-label"
                             value={currentProduct.farmingMethod || ''}
                             onChange={(e) => setCurrentProduct({ ...currentProduct, farmingMethod: e.target.value })}
-                            label="Category" 
+                            label="Farming Method"
+                            style={{ color: mode === 'dark' ? 'white' : 'black', backgroundColor: mode === 'dark' ? '#616161' : 'white' }} // Select color adjustment
                         >
                             <MenuItem value="Organic">Organic</MenuItem>
-                            <MenuItem value="Traditional">Traditional</MenuItem>
-                            <MenuItem value="Hydroponic">Hydroponic</MenuItem>
-                            <MenuItem value="Others">Others</MenuItem>
+                            <MenuItem value="Conventional">Conventional</MenuItem>
                         </Select>
                     </FormControl>
                     <TextField
@@ -322,27 +390,30 @@ const FarmerPage = () => {
                         fullWidth
                         margin="normal"
                         variant="outlined"
+                        InputLabelProps={{ style: { color: mode === 'dark' ? 'white' : 'black' } }} // Label color adjustment
+                        InputProps={{
+                            style: {
+                                color: mode === 'dark' ? 'white' : 'black',
+                                backgroundColor: mode === 'dark' ? '#616161' : 'white',
+                            },
+                        }}
                     />
-                    <input type="file" onChange={handleImageChange} />
                 </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => setOpenDialog(false)} color="secondary">
+                <DialogActions style={{ backgroundColor: mode === 'dark' ? '#424242' : theme.palette.primary.main }}>
+                    <Button onClick={() => setOpenDialog(false)}  variant="contained"
+                                        color="secondary">
                         Cancel
                     </Button>
-                    <Button onClick={handleSaveProduct} color="primary">
+                    <Button onClick={handleSaveProduct} variant="contained"
+                                        color="secondary">
                         {isEditing ? "Save Changes" : "Add Product"}
                     </Button>
                 </DialogActions>
             </Dialog>
 
-            {/* Snackbar for Notifications */}
-            <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
-                <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
-                    {snackbarMessage}
-                </Alert>
-            </Snackbar>
         </div>
     );
+
 };
 
 export default FarmerPage;

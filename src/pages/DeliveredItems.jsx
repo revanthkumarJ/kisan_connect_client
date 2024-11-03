@@ -11,10 +11,12 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from './AuthContext';
 
 const DeliveredItemsPage = () => {
   const [deliveredItems, setDeliveredItems] = useState([]);
   const navigate = useNavigate();
+  const { mode } = useAuth();
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -51,8 +53,16 @@ const DeliveredItemsPage = () => {
   }, []);
 
   return (
-    <Container style={{ padding: '20px', margin: '0 auto' }}>
-      <Typography variant="h4" align="center" gutterBottom>
+    <Container
+      maxWidth={false}
+      style={{
+        padding: '20px',
+        margin: '0 auto',
+        backgroundColor: mode === 'dark' ? '#121212' : '#f0f2f5',
+        color: mode === 'dark' ? '#f5f5f5' : '#333',
+      }}
+    >
+      <Typography variant="h4" align="center" gutterBottom style={{ color: mode === 'dark' ? '#ffffff' : '#000000' }}>
         Delivered Items
       </Typography>
       <Box
@@ -79,7 +89,7 @@ const DeliveredItemsPage = () => {
                 display: 'flex',
                 flexDirection: 'row',
                 width: '100%',
-                backgroundColor: '#f5f5f5',
+                backgroundColor: mode === 'dark' ? '#1f1f1f' : '#ffffff',
                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
                 borderRadius: '8px',
                 overflow: 'hidden',
@@ -104,6 +114,7 @@ const DeliveredItemsPage = () => {
                   flexDirection: 'column',
                   padding: '16px',
                   justifyContent: 'space-between',
+                  color: mode === 'dark' ? '#e0e0e0' : '#333',
                 }}
               >
                 <Box>

@@ -3,11 +3,13 @@ import { Box, Card, CardMedia, Typography, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { useAuth } from './AuthContext';
 
 const ProductPage = () => {
   const [products, setProducts] = useState({ fruits: [], vegetables: [], grains: [], dairy: [], others: [] });
   const navigate = useNavigate();
   const scrollRef = useRef({});
+  const { mode } = useAuth();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -50,14 +52,22 @@ const ProductPage = () => {
       sx={{ 
         width: '96%', 
         padding: '1rem', 
-        backgroundColor: '#f9f9f9', 
+        backgroundColor: mode === 'light' ? '#f0f0f0' : '#1b1b2f', // Dark bluish background
         borderRadius: '8px', 
-        boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)', 
+        boxShadow: mode === 'light' ? '0 2px 5px rgba(0, 0, 0, 0.1)' : '0 4px 10px rgba(0, 0, 0, 0.5)', // Heavier shadow in dark mode
         margin: '0 1rem 10px',
-        position: 'relative'  // Make container relative for absolute positioning of buttons
+        position: 'relative'
       }}
     >
-      <Typography variant="h6" component="h2" gutterBottom sx={{ fontWeight: 'bold', color: '#333' }}>
+      <Typography 
+        variant="h6" 
+        component="h2" 
+        gutterBottom 
+        sx={{ 
+          fontWeight: 'bold', 
+          color: mode === 'light' ? '#333' : '#c7d2fe'  // Light blue for dark mode text
+        }}
+      >
         {title}
       </Typography>
 
@@ -70,9 +80,10 @@ const ProductPage = () => {
           top: '50%',
           transform: 'translateY(-50%)',
           zIndex: 1,
-          backgroundColor: 'white',
-          boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
-          '&:hover': { backgroundColor: '#f0f0f0' },
+          backgroundColor: mode === 'light' ? 'white' : '#121212',
+          color: mode === 'light' ? '#333' : '#c7d2fe',
+          boxShadow: mode === 'light' ? '0 2px 4px rgba(0,0,0,0.3)' : '0 2px 5px rgba(0,0,0,0.7)',
+          '&:hover': { backgroundColor: mode === 'light' ? '#f0f0f0' : '#1c1c1e' },
         }}
       >
         <ArrowBackIosIcon />
@@ -85,7 +96,7 @@ const ProductPage = () => {
           display: 'flex',
           overflowX: 'auto',
           scrollBehavior: 'smooth',
-          marginX: '2rem', // Add margin to allow space for buttons
+          marginX: '2rem',
           '&::-webkit-scrollbar': { display: 'none' },
           msOverflowStyle: 'none',
           scrollbarWidth: 'none',
@@ -98,16 +109,18 @@ const ProductPage = () => {
                 width: 200,
                 transition: '0.3s',
                 cursor: 'pointer',
-                boxShadow: 'none',
+                boxShadow: mode === 'light' ? 'none' : '0 4px 20px rgba(0, 0, 0, 0.8)',
+                backgroundColor: mode === 'light' ? '#fff' : '#24243e',
+                '&:hover': {
+                  boxShadow: '0 6px 25px rgba(0,0,0,0.6)',
+                },
               }}
               onClick={() => handleCardClick(product)}
-              onMouseEnter={(e) => (e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.3)')}
-              onMouseLeave={(e) => (e.currentTarget.style.boxShadow = 'none')}
             >
               <CardMedia
                 component="img"
                 height="140"
-                image={`data:image/jpeg;base64,${product.image}`} // Assuming base64 string is in 'image' field
+                image={`data:image/jpeg;base64,${product.image}`}
                 alt={product.productName}
               />
               <Typography 
@@ -117,7 +130,7 @@ const ProductPage = () => {
                 sx={{ 
                   padding: '8px', 
                   fontWeight: 'bold', 
-                  color: '#555',
+                  color: mode === 'light' ? '#555' : '#e0e0e0',
                   textAlign: 'center'
                 }}
               >
@@ -125,8 +138,11 @@ const ProductPage = () => {
               </Typography>
               <Typography 
                 variant="body2" 
-                color="text.secondary" 
-                sx={{ padding: '0 8px', textAlign: 'center' }} 
+                sx={{ 
+                  padding: '0 8px', 
+                  color: mode === 'light' ? 'text.secondary' : '#b0bec5', 
+                  textAlign: 'center' 
+                }} 
               >
                 ${product.price.toFixed(2)} per {product.unit}
               </Typography>
@@ -144,9 +160,10 @@ const ProductPage = () => {
           top: '50%',
           transform: 'translateY(-50%)',
           zIndex: 1,
-          backgroundColor: 'white',
-          boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
-          '&:hover': { backgroundColor: '#f0f0f0' },
+          backgroundColor: mode === 'light' ? 'white' : '#121212',
+          color: mode === 'light' ? '#333' : '#c7d2fe',
+          boxShadow: mode === 'light' ? '0 2px 4px rgba(0,0,0,0.3)' : '0 2px 5px rgba(0,0,0,0.7)',
+          '&:hover': { backgroundColor: mode === 'light' ? '#f0f0f0' : '#1c1c1e' },
         }}
       >
         <ArrowForwardIosIcon />
@@ -155,7 +172,16 @@ const ProductPage = () => {
   );
 
   return (
-    <Box sx={{ width: '100%', padding: '0', margin: '0', maxWidth: '100vw' }}>
+    <Box 
+      sx={{ 
+        width: '100%', 
+        padding: '0', 
+        margin: '0', 
+        maxWidth: '100vw', 
+        backgroundColor: mode === 'light' ? '#fafafa' : '#121212',
+        color: mode === 'light' ? '#333' : '#e0e0e0'
+      }}
+    >
       {Object.entries(products).map(([category, productList]) => (
         <ProductRow
           key={category}

@@ -2,14 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Box, Grid, Card, CardMedia, Typography, CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from './AuthContext';
 
 const SearchResults = () => {
   const [products, setProducts] = useState([]);
+  const { mode } = useAuth();
   const [loading, setLoading] = useState(true);
   const location = useLocation();
   const query = new URLSearchParams(location.search).get('query');
   const navigate = useNavigate();
-  
+
   const handleCardClick = (product) => {
     navigate(`/product/${product.productName}`, { state: { product } });
   };
@@ -33,8 +35,14 @@ const SearchResults = () => {
   if (loading) return <CircularProgress />;
 
   return (
-    <Box sx={{ padding: 3 }}>
-      <Typography variant="h4" gutterBottom>
+    <Box
+      sx={{
+        padding: 3,
+        backgroundColor: mode === 'dark' ? '#121212' : '#ffffff',
+        color: mode === 'dark' ? '#ffffff' : '#000000',
+      }}
+    >
+      <Typography variant="h4" gutterBottom sx={{ color: mode === 'dark' ? '#ffffff' : '#000000' }}>
         Search Results for "{query}"
       </Typography>
       <Grid container spacing={3}>
@@ -45,7 +53,12 @@ const SearchResults = () => {
                 sx={{
                   transition: '0.3s',
                   cursor: 'pointer',
-                  boxShadow: 'none',
+                  boxShadow: mode === 'dark' ? '0px 4px 8px rgba(255, 255, 255, 0.1)' : '0px 4px 8px rgba(0, 0, 0, 0.1)',
+                  backgroundColor: mode === 'dark' ? '#333333' : '#ffffff',
+                  color: mode === 'dark' ? '#ffffff' : '#000000',
+                  '&:hover': {
+                    boxShadow: mode === 'dark' ? '0px 4px 12px rgba(255, 255, 255, 0.2)' : '0px 4px 12px rgba(0, 0, 0, 0.2)',
+                  },
                 }}
                 onClick={() => handleCardClick(product)}
               >
@@ -62,14 +75,14 @@ const SearchResults = () => {
                     padding: '8px',
                     fontWeight: 'bold',
                     textAlign: 'center',
+                    color: mode === 'dark' ? '#ffffff' : '#000000',
                   }}
                 >
                   {product.productName}
                 </Typography>
                 <Typography
                   variant="body2"
-                  color="text.secondary"
-                  sx={{ padding: '0 8px', textAlign: 'center' }}
+                  sx={{ padding: '0 8px', textAlign: 'center', color: mode === 'dark' ? '#bbbbbb' : '#555555' }}
                 >
                   ${product.price.toFixed(2)} per {product.unit}
                 </Typography>
@@ -77,7 +90,9 @@ const SearchResults = () => {
             </Grid>
           ))
         ) : (
-          <Typography variant="h6">No products found.</Typography>
+          <Typography variant="h6" sx={{ color: mode === 'dark' ? '#ffffff' : '#000000' }}>
+            No products found.
+          </Typography>
         )}
       </Grid>
     </Box>
