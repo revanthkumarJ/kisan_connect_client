@@ -11,6 +11,11 @@ import ProductDetailPage from './pages/ProductDetailPage'; // Import the product
 import { AuthProvider } from './pages/AuthContext';
 import SearchResults from './pages/SearchResultsPage';
 import PlaceOrderPage from './pages/PlaceOrder';
+import FarmerPage from "./pages/FarmerPage"
+import DeliveryBoy from './pages/DeliveryBoy';
+import OnTheWayPage from './pages/OnTheWay';
+import DeliveredItemsPage from './pages/DeliveredItems';
+import AboutUsPage from './pages/About';
 
 
 const App = () => {
@@ -28,8 +33,13 @@ const App = () => {
           {/* Product routes */}
           <Route path="/products" element={<ProductPage />} />  {/* Product listing page */}
           <Route path="/product/:productName" element={<ProductDetailPage />} />  {/* Product detail page */}
+          <Route path="/Farmer" element={<FarmerPage/>} />  {/* Product detail page */}
 
           <Route path="/place-order" element={<PlaceOrderPage />} />
+          <Route path="/DeliveryBoy" element={<DeliveryBoy />} />
+          <Route path="/OnTheWay" element={<OnTheWayPage />} />
+          <Route path="/Delivered" element={<DeliveredItemsPage />} />
+          <Route path="/AboutUs" element={<AboutUsPage />} />
         </Routes>
       </Router>
     </AuthProvider>

@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Box, Card, CardMedia, Typography } from '@mui/material';
+import { Box, Card, CardMedia, Typography, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 const ProductPage = () => {
   const [products, setProducts] = useState({ fruits: [], vegetables: [], grains: [], dairy: [], others: [] });
@@ -35,84 +37,120 @@ const ProductPage = () => {
     navigate(`/product/${product.productName}`, { state: { product } });
   };
 
+  const scrollLeft = (category) => {
+    scrollRef.current[category].scrollLeft -= 200;
+  };
+
+  const scrollRight = (category) => {
+    scrollRef.current[category].scrollLeft += 200;
+  };
+
   const ProductRow = ({ category, title, products }) => (
     <Box 
-      marginBottom="1rem" // Gap between each row
       sx={{ 
-        width: '100%', 
+        width: '96%', 
         padding: '1rem', 
-        backgroundColor: '#f9f9f9', // Slight whitish background
-        borderRadius: '8px', // Rounded corners
-        boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)', // Subtle shadow
-        margin: '0 1rem', // Outer margin for better spacing
-        marginBottom:"10px"
+        backgroundColor: '#f9f9f9', 
+        borderRadius: '8px', 
+        boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)', 
+        margin: '0 1rem 10px',
+        position: 'relative'  // Make container relative for absolute positioning of buttons
       }}
     >
       <Typography variant="h6" component="h2" gutterBottom sx={{ fontWeight: 'bold', color: '#333' }}>
         {title}
       </Typography>
-      <Box display="flex" alignItems="center" sx={{ width: '100%' }}>
-        {/* Products Row */}
-        <Box
-          ref={(el) => (scrollRef.current[category] = el)}
-          sx={{
-            display: 'flex',
-            overflowX: 'auto',
-            padding: '0',
-            margin: '0',
-            scrollBehavior: 'smooth',
-            width: '100%',
-            '&::-webkit-scrollbar': {
-              display: 'none',
-            },
-            msOverflowStyle: 'none',
-            scrollbarWidth: 'none',
-          }}
-        >
-          {products.map((product) => (
-            <Box key={product._id} marginRight="1rem">
-              <Card
-                sx={{
-                  width: 200,
-                  transition: '0.3s',
-                  cursor: 'pointer',
-                  boxShadow: 'none',
+
+      {/* Left Scroll Button */}
+      <IconButton
+        onClick={() => scrollLeft(category)}
+        sx={{
+          position: 'absolute',
+          left: 0,
+          top: '50%',
+          transform: 'translateY(-50%)',
+          zIndex: 1,
+          backgroundColor: 'white',
+          boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
+          '&:hover': { backgroundColor: '#f0f0f0' },
+        }}
+      >
+        <ArrowBackIosIcon />
+      </IconButton>
+
+      {/* Products Row */}
+      <Box
+        ref={(el) => (scrollRef.current[category] = el)}
+        sx={{
+          display: 'flex',
+          overflowX: 'auto',
+          scrollBehavior: 'smooth',
+          marginX: '2rem', // Add margin to allow space for buttons
+          '&::-webkit-scrollbar': { display: 'none' },
+          msOverflowStyle: 'none',
+          scrollbarWidth: 'none',
+        }}
+      >
+        {products.map((product) => (
+          <Box key={product._id} marginRight="1rem">
+            <Card
+              sx={{
+                width: 200,
+                transition: '0.3s',
+                cursor: 'pointer',
+                boxShadow: 'none',
+              }}
+              onClick={() => handleCardClick(product)}
+              onMouseEnter={(e) => (e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.3)')}
+              onMouseLeave={(e) => (e.currentTarget.style.boxShadow = 'none')}
+            >
+              <CardMedia
+                component="img"
+                height="140"
+                image={`data:image/jpeg;base64,${product.image}`} // Assuming base64 string is in 'image' field
+                alt={product.productName}
+              />
+              <Typography 
+                gutterBottom 
+                variant="subtitle1" 
+                component="div" 
+                sx={{ 
+                  padding: '8px', 
+                  fontWeight: 'bold', 
+                  color: '#555',
+                  textAlign: 'center'
                 }}
-                onClick={() => handleCardClick(product)}
-                onMouseEnter={(e) => (e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.3)')}
-                onMouseLeave={(e) => (e.currentTarget.style.boxShadow = 'none')}
               >
-                <CardMedia
-                  component="img"
-                  height="140"
-                  image={`data:image/jpeg;base64,${product.image}`} // Assuming base64 string is in 'image' field
-                  alt={product.productName}
-                />
-                <Typography 
-                  gutterBottom 
-                  variant="subtitle1" 
-                  component="div" 
-                  sx={{ 
-                    padding: '8px', 
-                    fontWeight: 'bold', 
-                    color: '#555',
-                    textAlign: 'center' // Centering the title
-                  }}
-                >
-                  {product.productName}
-                </Typography>
-                <Typography 
-                  variant="body2" 
-                  color="text.secondary" 
-                  sx={{ padding: '0 8px', textAlign: 'center' }} // Centering the price
-                >
-                  ${product.price.toFixed(2)} per {product.unit}
-                </Typography>
-              </Card>
-            </Box>
-          ))}
-        </Box>
+                {product.productName}
+              </Typography>
+              <Typography 
+                variant="body2" 
+                color="text.secondary" 
+                sx={{ padding: '0 8px', textAlign: 'center' }} 
+              >
+                ${product.price.toFixed(2)} per {product.unit}
+              </Typography>
+            </Card>
+          </Box>
+        ))}
       </Box>
+
+      {/* Right Scroll Button */}
+      <IconButton
+        onClick={() => scrollRight(category)}
+        sx={{
+          position: 'absolute',
+          right: 0,
+          top: '50%',
+          transform: 'translateY(-50%)',
+          zIndex: 1,
+          backgroundColor: 'white',
+          boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
+          '&:hover': { backgroundColor: '#f0f0f0' },
+        }}
+      >
+        <ArrowForwardIosIcon />
+      </IconButton>
     </Box>
   );
 
@@ -122,7 +160,7 @@ const ProductPage = () => {
         <ProductRow
           key={category}
           category={category}
-          title={category.charAt(0).toUpperCase() + category.slice(1)} // Capitalize category title
+          title={category.charAt(0).toUpperCase() + category.slice(1)}
           products={productList}
         />
       ))}

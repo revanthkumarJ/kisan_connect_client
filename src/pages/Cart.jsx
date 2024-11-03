@@ -13,12 +13,14 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import HistoryIcon from '@mui/icons-material/History';
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
-  const navigate=useNavigate()
+  const navigate = useNavigate();
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -39,7 +41,6 @@ const CartPage = () => {
           return { ...item, product: productResponse.data.item };
         }));
         setCartItems(itemsWithDetails);
-        // console.log(itemsWithDetails)
       } catch (error) {
         console.error(error);
         setSnackbarMessage('Failed to load cart items');
@@ -54,7 +55,6 @@ const CartPage = () => {
     navigate(`/place-order?productId=${productId}&quantity=${quantity}`);
   };
   
-
   const handleDeleteFromCart = async (cartItemId) => {
     try {
       const token = localStorage.getItem('token');
@@ -65,7 +65,6 @@ const CartPage = () => {
       });
 
       if (response.status === 200) {
-        // Filter out the deleted item from cartItems in the frontend
         setCartItems(cartItems.filter(item => item.productId !== cartItemId));
         setSnackbarMessage('Item removed from cart');
       } else {
@@ -77,7 +76,6 @@ const CartPage = () => {
     }
     setSnackbarOpen(true);
   };
-
 
   return (
     <Container
@@ -99,10 +97,20 @@ const CartPage = () => {
           Your Cart
         </Typography>
         <Box display="flex" flexDirection="column" alignItems="flex-end">
-          <Button variant="contained" sx={{ mb: 1 }}>
+          <Button
+            variant="contained"
+            startIcon={<LocalShippingIcon />}
+            onClick={() => navigate('/OnTheWay')}
+            sx={{ mb: 1, width: '200px' }}
+          >
             On the Way
           </Button>
-          <Button variant="contained">
+          <Button
+            variant="contained"
+            startIcon={<HistoryIcon />}
+            onClick={() => navigate('/Delivered')}
+            sx={{ width: '200px' }}
+          >
             Previous Orders
           </Button>
         </Box>
@@ -129,9 +137,9 @@ const CartPage = () => {
                 display: 'flex',
                 flexDirection: 'row',
                 width: '100%',
-                backgroundColor: '#f5f5f5',  // Soft whitish background
-                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',  // Soft shadow
-                borderRadius: '8px',  // Rounded corners for a professional look
+                backgroundColor: '#f5f5f5',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                borderRadius: '8px',
                 overflow: 'hidden',
               }}
             >
@@ -194,9 +202,9 @@ const CartPage = () => {
                     disabled={cartItem.product.stock === 0}
                     sx={{
                       flex: 1,
-                      padding: '10px',  // Ensure buttons have enough padding
-                      marginRight: '10px',  // Add margin between buttons
-                      fontSize: '0.9rem',  // Adjust font size
+                      padding: '10px',
+                      marginRight: '10px',
+                      fontSize: '0.9rem',
                     }}
                   >
                     Buy Now
