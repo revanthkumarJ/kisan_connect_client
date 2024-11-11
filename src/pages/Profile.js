@@ -16,6 +16,7 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
+import ProfileDrawer from "../utils/profileDrawer.jsx"
 
 const ProfilePage = () => {
   const { mode, logout } = useAuth();
@@ -107,6 +108,126 @@ const ProfilePage = () => {
   const formattedAddress = `${user.address.doorNo}, ${user.address.area}, ${user.address.district}, ${user.address.pincode} ${user.address.landmark}, ${user.address.state}`;
 
   return (
+
+
+    <>
+
+        <div className='absolute  ml-[58rem] mt-[2.6rem]'>
+          <ProfileDrawer/>
+        </div>  
+
+
+        <div className='w-6/12 m-auto'>
+            <Box sx={{ padding: '2rem', display: 'flex', justifyContent: 'space-between' }}>
+                  <Card sx={{ flex: 1, marginRight: '1rem' }}>
+                    <CardContent>
+                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                          <Avatar sx={{ width: 100, height: 100, marginBottom: 2 }} /> {/* Placeholder for user image */}
+                          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                            {user.roles.isAdmin && <Typography variant="body1">Admin</Typography>}
+                            {user.roles.isDeliveryBoy && <Typography variant="body1">Delivery Boy</Typography>}
+                            {user.roles.isFarmer && <Typography variant="body1">Farmer</Typography>}
+                            {user.roles.isCustomer && <Typography variant="body1">Customer</Typography>}
+                          </Box>
+                        </Box>
+                        <Box sx={{ marginLeft: 2 }}>
+                          <Typography variant="h6">{user.name}</Typography>
+                          <Typography variant="body1">{user.phoneNumber}</Typography>
+                          <Typography variant="body1">{formattedAddress}</Typography>
+                          <Button variant="contained" color="primary" onClick={handleEditClick} sx={{ marginTop: '1rem' }}>
+                            Edit
+                          </Button>
+                          <Button variant="contained" color="secondary" onClick={handleLogout} sx={{ marginTop: '1rem' }}>
+                            Logout
+                          </Button>
+                        </Box>
+                      </Box>
+                    </CardContent>
+                  </Card>
+
+                  <Dialog open={dialogOpen} onClose={handleDialogClose} fullWidth>
+                    <DialogTitle>Edit Profile</DialogTitle>
+                    <DialogContent>
+                      <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                          <TextField
+                            fullWidth
+                            label="Name"
+                            name="name"
+                            value={updatedUser?.name || ''}
+                            onChange={handleInputChange}
+                          />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <TextField
+                            fullWidth
+                            label="Phone Number"
+                            name="phoneNumber"
+                            value={updatedUser?.phoneNumber || ''}
+                            onChange={handleInputChange}
+                          />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <TextField
+                            fullWidth
+                            label="Door No"
+                            name="doorNo"
+                            value={updatedUser?.address?.doorNo || ''}
+                            onChange={handleInputChange}
+                          />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <TextField
+                            fullWidth
+                            label="Area"
+                            name="area"
+                            value={updatedUser?.address?.area || ''}
+                            onChange={handleInputChange}
+                          />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <TextField
+                            fullWidth
+                            label="District"
+                            name="district"
+                            value={updatedUser?.address?.district || ''}
+                            onChange={handleInputChange}
+                          />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <TextField
+                            fullWidth
+                            label="State"
+                            name="state"
+                            value={updatedUser?.address?.state || ''}
+                            onChange={handleInputChange}
+                          />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <TextField
+                            fullWidth
+                            label="Pincode"
+                            name="pincode"
+                            value={updatedUser?.address?.pincode || ''}
+                            onChange={handleInputChange}
+                          />
+                        </Grid>
+                      </Grid>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={handleDialogClose} color="secondary">
+                        Cancel
+                      </Button>
+                      <Button onClick={handleUpdateUser} color="primary">
+                        OK
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+                </Box>
+              </div>
+    </>
+
     <Box sx={{ padding: '2rem', backgroundColor: colors.background ,height:"100vh"}}>
       <Card sx={{  marginRight: '1rem', backgroundColor: colors.dialogBackground }}>
         <CardContent>

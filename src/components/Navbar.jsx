@@ -97,7 +97,7 @@ const Navbar = () => {
             </IconButton>
           ) : (
             <Button sx={{ color: 'white' }} component={Link} to="/login">
-              Login
+              login
             </Button>
           )}
           <Switch checked={mode === 'dark'} onChange={toggle} />
