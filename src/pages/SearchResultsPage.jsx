@@ -59,6 +59,7 @@ const SearchResults = () => {
                   '&:hover': {
                     boxShadow: mode === 'dark' ? '0px 4px 12px rgba(255, 255, 255, 0.2)' : '0px 4px 12px rgba(0, 0, 0, 0.2)',
                   },
+                  paddingBottom:"10px"
                 }}
                 onClick={() => handleCardClick(product)}
               >
@@ -67,6 +68,7 @@ const SearchResults = () => {
                   height="220"
                   image={`data:image/jpeg;base64,${product.image}`}
                   alt={product.productName}
+                  sx={{height:"220px"}}
                 />
                 <Typography
                   gutterBottom
