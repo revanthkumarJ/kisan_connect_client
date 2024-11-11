@@ -52,7 +52,7 @@ const Navbar = () => {
             </IconButton>
           ) : (
             <Button sx={{ color: 'white' }} component={Link} to="/login">
-              Login
+              login
             </Button>
           )}
           <Button sx={{ color: 'white' }} component={Link} to="/cart">
