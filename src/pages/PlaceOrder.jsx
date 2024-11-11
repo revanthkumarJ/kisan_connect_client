@@ -85,7 +85,7 @@ const PlaceOrderPage = () => {
         // Delay navigation by 3 seconds after successful order placement
         setTimeout(() => {
           navigate('/');
-        }, 3000);
+        }, 1000);
       } else {
         setOrderStatus('Failed to place order. Please try again.');
       }

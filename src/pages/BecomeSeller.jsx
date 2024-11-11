@@ -2,19 +2,20 @@ import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Snackbar, Alert } from '@mui/material';
+import { useAuth } from './AuthContext';
 
 const BecomeSeller = () => {
+  const { mode } = useAuth();
   const [farmLocation, setFarmLocation] = useState('');
   const [farmSize, setFarmSize] = useState('');
   const [experience, setExperience] = useState('');
   const [farmPhoto, setFarmPhoto] = useState(null);
   const [proofPhoto, setProofPhoto] = useState(null);
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState(''); // Add state for snackbar message
-  const [snackbarSeverity, setSnackbarSeverity] = useState('success'); // Add state for snackbar severity
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
   const navigate = useNavigate();
 
-  // Create refs for the file inputs
   const farmPhotoInputRef = useRef(null);
   const proofPhotoInputRef = useRef(null);
 
@@ -26,7 +27,6 @@ const BecomeSeller = () => {
         throw new Error("User is not logged in.");
       }
 
-      // Set up FormData for the request
       const formData = new FormData();
       formData.append('userId', user._id);
       formData.append('farmLocation', farmLocation);
@@ -40,12 +40,10 @@ const BecomeSeller = () => {
         formData.append('proofPhoto', proofPhotoInputRef.current.files[0]);
       }
 
-      // Send POST request
       await axios.post('http://localhost:3000/admin/farmer/addFarmerApplication', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
-      // Show success message in snackbar and redirect after 2 seconds
       setSnackbarMessage('Request Submitted!');
       setSnackbarSeverity('success');
       setOpenSnackbar(true);
@@ -53,7 +51,6 @@ const BecomeSeller = () => {
         navigate('/');
       }, 2000);
     } catch (error) {
-      // Show error message in snackbar
       setSnackbarMessage(error.response?.data?.message || 'Error submitting farmer application');
       setSnackbarSeverity('error');
       setOpenSnackbar(true);
@@ -80,13 +77,87 @@ const BecomeSeller = () => {
     }
   };
 
+  const isDarkMode = mode === 'dark';
+
+  const styles = {
+    container: {
+      padding: '3rem',
+      backgroundColor: isDarkMode ? '#121212' : '#f0f4f8',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      minHeight: '100vh',
+    },
+    formContainer: {
+      backgroundColor: isDarkMode ? '#333' : '#f9f9f9',
+      color: isDarkMode ? '#f1f1f1' : '#333',
+      borderRadius: '8px',
+      padding: '2rem',
+      boxShadow: isDarkMode ? '0 4px 20px rgba(255,255,255,0.1)' : '0 4px 20px rgba(0,0,0,0.1)',
+      maxWidth: '600px',
+      width: '100%',
+    },
+    header: {
+      fontSize: '2rem',
+      fontWeight: 'bold',
+      textAlign: 'center',
+      marginBottom: '1.5rem',
+    },
+    field: {
+      marginBottom: '1rem',
+    },
+    input: {
+      width: '100%',
+      padding: '0.75rem',
+      borderRadius: '4px',
+      border: '1px solid #ccc',
+      backgroundColor: isDarkMode ? '#555' : '#fff',
+      color: isDarkMode ? '#f1f1f1' : '#333',
+    },
+    button: {
+      width: '100%',
+      padding: '0.75rem',
+      backgroundColor: isDarkMode ? '#90caf9' : '#28a745',
+      color: '#fff',
+      border: 'none',
+      borderRadius: '4px',
+      cursor: 'pointer',
+      marginTop: '1rem',
+    },
+    label: {
+      display: 'block',
+      marginBottom: '0.5rem',
+      color: isDarkMode ? '#bdbdbd' : '#333',
+    },
+    imagePreviewContainer: {
+      position: 'relative',
+      display: 'inline-block',
+      marginTop: '1rem',
+    },
+    imagePreview: {
+      width: '100%',
+      maxWidth: '200px',
+      borderRadius: '8px',
+    },
+    removeButton: {
+      position: 'absolute',
+      top: '5px',
+      right: '5px',
+      backgroundColor: 'red',
+      color: 'white',
+      border: 'none',
+      borderRadius: '50%',
+      width: '25px',
+      height: '25px',
+      cursor: 'pointer',
+    },
+  };
+
   return (
     <div style={styles.container}>
       <div style={styles.formContainer}>
         <h4 style={styles.header}>Become a Seller</h4>
         <form onSubmit={handleSubmit}>
-          
-          {/* Farm Location */}
           <div style={styles.field}>
             <input
               type="text"
@@ -98,7 +169,6 @@ const BecomeSeller = () => {
             />
           </div>
 
-          {/* Farm Size */}
           <div style={styles.field}>
             <input
               type="number"
@@ -110,7 +180,6 @@ const BecomeSeller = () => {
             />
           </div>
 
-          {/* Experience */}
           <div style={styles.field}>
             <input
               type="number"
@@ -122,7 +191,6 @@ const BecomeSeller = () => {
             />
           </div>
 
-          {/* Farm Photo */}
           <div style={styles.field}>
             <label htmlFor="farmPhoto" style={styles.label}>
               Upload Farm Photo (Accepted formats: jpg, jpeg, png):
@@ -149,7 +217,6 @@ const BecomeSeller = () => {
             )}
           </div>
 
-          {/* Proof Photo */}
           <div style={styles.field}>
             <label htmlFor="proofPhoto" style={styles.label}>
               Upload Proof Photo (Accepted formats: jpg, jpeg, png):
@@ -181,8 +248,7 @@ const BecomeSeller = () => {
           </button>
         </form>
       </div>
-      
-      {/* Snackbar for submission status */}
+
       <Snackbar
         open={openSnackbar}
         onClose={() => setOpenSnackbar(false)}
@@ -194,75 +260,6 @@ const BecomeSeller = () => {
       </Snackbar>
     </div>
   );
-};
-
-const styles = {
-  container: {
-    padding: '3rem',
-    backgroundColor: '#f0f4f8',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  formContainer: {
-    backgroundColor: '#f9f9f9',
-    borderRadius: '8px',
-    padding: '2rem',
-    boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
-    maxWidth: '600px',
-    width: '100%',
-  },
-  header: {
-    fontSize: '2rem',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: '1.5rem',
-  },
-  field: {
-    marginBottom: '1rem',
-  },
-  input: {
-    width: '100%',
-    padding: '0.75rem',
-    borderRadius: '4px',
-    border: '1px solid #ccc',
-  },
-  button: {
-    width: '100%',
-    padding: '0.75rem',
-    backgroundColor: '#28a745',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    marginTop: '1rem',
-  },
-  label: {
-    display: 'block',
-    marginBottom: '0.5rem',
-  },
-  imagePreviewContainer: {
-    position: 'relative',
-    display: 'inline-block',
-    marginTop: '1rem',
-  },
-  imagePreview: {
-    width: '100%',
-    maxWidth: '200px',
-    borderRadius: '8px',
-  },
-  removeButton: {
-    position: 'absolute',
-    top: '5px',
-    right: '5px',
-    backgroundColor: 'red',
-    color: 'white',
-    border: 'none',
-    borderRadius: '50%',
-    width: '25px',
-    height: '25px',
-    cursor: 'pointer',
-  },
 };
 
 export default BecomeSeller;

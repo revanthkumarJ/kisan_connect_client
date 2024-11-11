@@ -5,8 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 
 const LoginPage = () => {
-  const { login } = useAuth();
-
+  const { login, mode } = useAuth(); // Get the login function and mode (light/dark)
   const [activeTab, setActiveTab] = useState(0); // 0 for Sign In, 1 for Sign Up
   const [signInData, setSignInData] = useState({ email: '', password: '' });
   const [signUpData, setSignUpData] = useState({ name: '', email: '', password: '', phoneNumber: '' });
@@ -33,11 +32,7 @@ const LoginPage = () => {
           'Content-Type': 'application/json',
         },
       });
-      // console.log(response)
-      // localStorage.setItem('token', response.data.token); 
-      // localStorage.setItem('userId',response.data.user._id)
-      console.log(response.data.user)
-      login(response.data.user,response.data.token)
+      login(response.data.user, response.data.token);
       setSnackbarMessage('Logged in successfully!');
       setSnackbarOpen(true);
 
@@ -47,12 +42,12 @@ const LoginPage = () => {
       }, 2000); // Adjust the timeout duration as needed
 
     } catch (error) {
-      console.log(error); // Log the error for debugging
+      console.log(error);
 
       if (error.response && error.response.data && error.response.data.error) {
-        setSnackbarMessage(error.response.data.error); // Show the error message from the server
+        setSnackbarMessage(error.response.data.error);
       } else {
-        setSnackbarMessage('An unexpected error occurred. Please try again.'); // Fallback error message
+        setSnackbarMessage('An unexpected error occurred. Please try again.');
       }
       setSnackbarOpen(true);
     }
@@ -83,107 +78,171 @@ const LoginPage = () => {
         }, 2000); // Adjust the timeout duration as needed
       }
     } catch (error) {
-      console.log(error); // Log the error for debugging
+      console.log(error);
 
       if (error.response && error.response.data && error.response.data.error) {
-        setSnackbarMessage(error.response.data.error); // Show the error message from the server
+        setSnackbarMessage(error.response.data.error);
       } else {
-        setSnackbarMessage('An unexpected error occurred. Please try again.'); // Fallback error message
+        setSnackbarMessage('An unexpected error occurred. Please try again.');
       }
       setSnackbarOpen(true);
     }
   };
 
+  // Define styles based on mode
+  const styles = {
+    container: {
+      marginTop: '2rem',
+      backgroundColor: mode === 'light' ? '#fff' : '#424242', // Light or dark background
+      color: mode === 'light' ? '#000' : '#fff', // Light or dark text color
+      borderRadius: '8px',
+      padding: '16px',
+    },
+    input: {
+      backgroundColor: mode === 'light' ? '#f5f5f5' : '#616161', // Input background based on mode
+    },
+    button: {
+      backgroundColor: mode === 'light' ? '#1976d2' : '#bb86fc', // Button color based on mode
+      color: '#fff',
+    },
+    text: {
+      color: mode === 'light' ? '#000' : '#fff', // Text color based on mode
+    },
+  };
+
   return (
-    <Container maxWidth="sm" style={{ marginTop: '2rem' }}>
-      <Tabs
-        value={activeTab}
-        onChange={(event, newValue) => setActiveTab(newValue)}
-        indicatorColor="primary"
-        textColor="primary"
-        centered
-      >
-        <Tab label="Sign In" />
-        <Tab label="Sign Up" />
-      </Tabs>
+    <Container 
+      maxWidth={false}
+      style={{
+        height: '100vh', // Full viewport height
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: mode === 'light' ? '#f0f0f0' : '#303030'
+      }}
+    >
+      <Container maxWidth="sm" style={styles.container}>
+        <Tabs
+          value={activeTab}
+          onChange={(event, newValue) => setActiveTab(newValue)}
+          indicatorColor="primary"
+          textColor="primary"
+          centered
+        >
+          <Tab label="Sign In" />
+          <Tab label="Sign Up" />
+        </Tabs>
 
-      {/* Sign In Form */}
-      {activeTab === 0 && (
-        <Box sx={{ mt: 2 }}>
-          <Typography variant="h5">Sign In</Typography>
-          <TextField
-            fullWidth
-            margin="normal"
-            label="Email"
-            name="email"
-            value={signInData.email}
-            onChange={handleSignInChange}
-          />
-          <TextField
-            fullWidth
-            margin="normal"
-            label="Password"
-            type="password"
-            name="password"
-            value={signInData.password}
-            onChange={handleSignInChange}
-          />
-          <Button variant="contained" color="primary" onClick={handleSignIn}>
-            Sign In
-          </Button>
-        </Box>
-      )}
+        {/* Sign In Form */}
+        {activeTab === 0 && (
+          <Box sx={{ mt: 2 }}>
+            <Typography variant="h5" style={styles.text}>Sign In</Typography>
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Email"
+              name="email"
+              value={signInData.email}
+              onChange={handleSignInChange}
+              variant="outlined"
+              InputProps={{
+                style: { ...styles.input }
+              }}
+            />
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Password"
+              type="password"
+              name="password"
+              value={signInData.password}
+              onChange={handleSignInChange}
+              variant="outlined"
+              InputProps={{
+                style: { ...styles.input }
+              }}
+            />
+            <Button 
+              variant="contained" 
+              style={styles.button} 
+              onClick={handleSignIn}
+            >
+              Sign In
+            </Button>
+          </Box>
+        )}
 
-      {/* Sign Up Form */}
-      {activeTab === 1 && (
-        <Box sx={{ mt: 2 }}>
-          <Typography variant="h5">Sign Up</Typography>
-          <TextField
-            fullWidth
-            margin="normal"
-            label="Name"
-            name="name"
-            value={signUpData.name}
-            onChange={handleSignUpChange}
-          />
-          <TextField
-            fullWidth
-            margin="normal"
-            label="Email"
-            name="email"
-            value={signUpData.email}
-            onChange={handleSignUpChange}
-          />
-          <TextField
-            fullWidth
-            margin="normal"
-            label="Password"
-            type="password"
-            name="password"
-            value={signUpData.password}
-            onChange={handleSignUpChange}
-          />
-          <TextField
-            fullWidth
-            margin="normal"
-            label="Phone Number"
-            name="phoneNumber"
-            value={signUpData.phoneNumber}
-            onChange={handleSignUpChange}
-          />
-          <Button variant="contained" color="primary" onClick={handleSignUp}>
-            Sign Up
-          </Button>
-        </Box>
-      )}
+        {/* Sign Up Form */}
+        {activeTab === 1 && (
+          <Box sx={{ mt: 2 }}>
+            <Typography variant="h5" style={styles.text}>Sign Up</Typography>
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Name"
+              name="name"
+              value={signUpData.name}
+              onChange={handleSignUpChange}
+              variant="outlined"
+              InputProps={{
+                style: { ...styles.input }
+              }}
+            />
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Email"
+              name="email"
+              value={signUpData.email}
+              onChange={handleSignUpChange}
+              variant="outlined"
+              InputProps={{
+                style: { ...styles.input }
+              }}
+            />
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Password"
+              type="password"
+              name="password"
+              value={signUpData.password}
+              onChange={handleSignUpChange}
+              variant="outlined"
+              InputProps={{
+                style: { ...styles.input }
+              }}
+            />
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Phone Number"
+              name="phoneNumber"
+              value={signUpData.phoneNumber}
+              onChange={handleSignUpChange}
+              variant="outlined"
+              InputProps={{
+                style: { ...styles.input }
+              }}
+            />
+            <Button 
+              variant="contained" 
+              style={styles.button} 
+              onClick={handleSignUp}
+            >
+              Sign Up
+            </Button>
+          </Box>
+        )}
 
-      {/* Snackbar for notifications */}
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={() => setSnackbarOpen(false)}
-        message={snackbarMessage}
-      />
+        {/* Snackbar for notifications */}
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={() => setSnackbarOpen(false)}
+          message={snackbarMessage}
+        />
+      </Container>
     </Container>
   );
 };

@@ -9,6 +9,7 @@ export const useAuth = () => useContext(AuthContext);
 // AuthProvider component to wrap the application
 export function AuthProvider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('user'));
+  const [mode,setMode]=useState("light");
 
   // Function to log in
   const login = (user,authToken) => {
@@ -18,6 +19,17 @@ export function AuthProvider({ children }) {
     setIsLoggedIn(true);
   };
 
+  const toggle=()=>{
+    if(mode==="light")
+    {
+        setMode("dark");
+    }
+    else
+    {
+        setMode("light")
+    }
+  }
+
   // Function to log out
   const logout = () => {
     localStorage.removeItem('user');
@@ -26,7 +38,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, login, logout,toggle,mode }}>
       {children}
     </AuthContext.Provider>
   );

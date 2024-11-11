@@ -13,12 +13,16 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import HistoryIcon from '@mui/icons-material/History';
+import { useAuth } from './AuthContext';
 
 const CartPage = () => {
+  const { mode } = useAuth();
   const [cartItems, setCartItems] = useState([]);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
-  const navigate=useNavigate()
+  const navigate = useNavigate();
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -34,12 +38,13 @@ const CartPage = () => {
           },
         });
 
-        const itemsWithDetails = await Promise.all(response.data.cartItems.map(async (item) => {
-          const productResponse = await axios.get(`http://localhost:3000/customer/getProduct/${item.productId}`);
-          return { ...item, product: productResponse.data.item };
-        }));
+        const itemsWithDetails = await Promise.all(
+          response.data.cartItems.map(async (item) => {
+            const productResponse = await axios.get(`http://localhost:3000/customer/getProduct/${item.productId}`);
+            return { ...item, product: productResponse.data.item };
+          })
+        );
         setCartItems(itemsWithDetails);
-        // console.log(itemsWithDetails)
       } catch (error) {
         console.error(error);
         setSnackbarMessage('Failed to load cart items');
@@ -53,7 +58,6 @@ const CartPage = () => {
   const handleBuyNow = (productId, quantity) => {
     navigate(`/place-order?productId=${productId}&quantity=${quantity}`);
   };
-  
 
   const handleDeleteFromCart = async (cartItemId) => {
     try {
@@ -65,8 +69,7 @@ const CartPage = () => {
       });
 
       if (response.status === 200) {
-        // Filter out the deleted item from cartItems in the frontend
-        setCartItems(cartItems.filter(item => item.productId !== cartItemId));
+        setCartItems(cartItems.filter((item) => item.productId !== cartItemId));
         setSnackbarMessage('Item removed from cart');
       } else {
         setSnackbarMessage('Failed to remove item from cart');
@@ -78,31 +81,48 @@ const CartPage = () => {
     setSnackbarOpen(true);
   };
 
-
   return (
     <Container
       maxWidth={false}
       disableGutters
-      style={{ marginTop: '2rem' }}
+      sx={{
+        paddingTop: '2rem',
+        backgroundColor: mode === 'dark' ? '#121212' : '#ffffff',
+        minHeight: '100vh',
+        padding: '16px',
+      }}
     >
       <Box
         display="flex"
         justifyContent="space-between"
         alignItems="center"
-        sx={{ padding: '16px' }}
+        sx={{ padding: '16px', color: mode === 'dark' ? '#ffffff' : '#000000' }}
       >
         <Typography
           variant="h4"
           gutterBottom
-          style={{ color: 'black', textAlign: 'center' }}
+          sx={{
+            color: mode === 'dark' ? '#ffffff' : '#000000',
+            textAlign: 'center',
+          }}
         >
           Your Cart
         </Typography>
         <Box display="flex" flexDirection="column" alignItems="flex-end">
-          <Button variant="contained" sx={{ mb: 1 }}>
+          <Button
+            variant="contained"
+            startIcon={<LocalShippingIcon />}
+            onClick={() => navigate('/OnTheWay')}
+            sx={{ mb: 1, width: '200px', backgroundColor: mode === 'dark' ? '#bb86fc' : '#3f51b5' }}
+          >
             On the Way
           </Button>
-          <Button variant="contained">
+          <Button
+            variant="contained"
+            startIcon={<HistoryIcon />}
+            onClick={() => navigate('/Delivered')}
+            sx={{ width: '200px', backgroundColor: mode === 'dark' ? '#bb86fc' : '#3f51b5' }}
+          >
             Previous Orders
           </Button>
         </Box>
@@ -119,7 +139,7 @@ const CartPage = () => {
             key={cartItem._id}
             sx={{
               display: 'flex',
-              width: isMobile ? '100%' : (isLaptop ? '48%' : '100%'),
+              width: isMobile ? '100%' : isLaptop ? '48%' : '100%',
               marginBottom: '1.5rem',
               padding: '10px',
             }}
@@ -129,9 +149,9 @@ const CartPage = () => {
                 display: 'flex',
                 flexDirection: 'row',
                 width: '100%',
-                backgroundColor: '#f5f5f5',  // Soft whitish background
-                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',  // Soft shadow
-                borderRadius: '8px',  // Rounded corners for a professional look
+                backgroundColor: mode === 'dark' ? '#1f1f1f' : '#f5f5f5',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                borderRadius: '8px',
                 overflow: 'hidden',
               }}
             >
@@ -144,7 +164,7 @@ const CartPage = () => {
                   width: '50%',
                   height: 200,
                   objectFit: 'cover',
-                  padding: '10px'
+                  padding: '10px',
                 }}
               />
               <CardContent
@@ -154,6 +174,7 @@ const CartPage = () => {
                   flexDirection: 'column',
                   padding: '16px',
                   justifyContent: 'space-between',
+                  color: mode === 'dark' ? '#ffffff' : '#000000',
                 }}
               >
                 <Box>
@@ -164,12 +185,8 @@ const CartPage = () => {
                   >
                     {cartItem.product.productName}
                   </Typography>
-                  <Typography variant="body1">
-                    Quantity: {cartItem.quantity}
-                  </Typography>
-                  <Typography variant="body1">
-                    Category: {cartItem.product.category}
-                  </Typography>
+                  <Typography variant="body1">Quantity: {cartItem.quantity}</Typography>
+                  <Typography variant="body1">Category: {cartItem.product.category}</Typography>
                   <Typography variant="body1">
                     Price: ₹{cartItem.quantity * cartItem.product.price}
                   </Typography>
@@ -184,19 +201,20 @@ const CartPage = () => {
                   sx={{
                     display: 'flex',
                     justifyContent: 'space-between',
-                    marginTop: '16px'
+                    marginTop: '16px',
                   }}
                 >
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={() => handleBuyNow(cartItem.product._id,cartItem.quantity)}
+                    onClick={() => handleBuyNow(cartItem.product._id, cartItem.quantity)}
                     disabled={cartItem.product.stock === 0}
                     sx={{
                       flex: 1,
-                      padding: '10px',  // Ensure buttons have enough padding
-                      marginRight: '10px',  // Add margin between buttons
-                      fontSize: '0.9rem',  // Adjust font size
+                      padding: '10px',
+                      marginRight: '10px',
+                      fontSize: '0.9rem',
+                      backgroundColor: mode === 'dark' ? '#bb86fc' : '#3f51b5',
                     }}
                   >
                     Buy Now
@@ -209,6 +227,8 @@ const CartPage = () => {
                       flex: 1,
                       padding: '10px',
                       fontSize: '0.9rem',
+                      color: mode === 'dark' ? '#ffffff' : '#000000',
+                      borderColor: mode === 'dark' ? '#bb86fc' : '#3f51b5',
                     }}
                   >
                     Delete
