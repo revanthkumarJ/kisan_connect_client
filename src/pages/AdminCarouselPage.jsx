@@ -110,8 +110,18 @@ const AdminCarouselPage = () => {
     const handleSaveCarousel = async () => {
         const formData = new FormData();
         formData.append("title", newCarousel.title);
-        formData.append("image", newCarousel.image);
-
+        
+        if (newCarousel.image) {
+            formData.append("image", newCarousel.image);
+        } else {
+            console.warn("Image file is empty.");
+        }
+    
+        // Log FormData contents for debugging
+        for (let pair of formData.entries()) {
+            console.log(pair[0]+ ', ' + pair[1]); 
+        }
+    
         try {
             const token = localStorage.getItem("token");
             const response = await axios.post("http://localhost:3000/admin/carousel/addcarousel", formData, {
@@ -120,16 +130,16 @@ const AdminCarouselPage = () => {
                     'auth-token': token
                 }
             });
-
+    
             const savedCarousel = response.data.carouselItem;
-
+    
             if (savedCarousel) {
                 const newCarouselData = {
                     ...savedCarousel,
                     previewUrl: newCarousel.previewUrl,
                     createdAt: savedCarousel.createdAt
                 };
-
+    
                 setCarousels(prevCarousels => [...prevCarousels, newCarouselData]);
                 handleCloseDialog();
                 setSnackbarMessage('Carousel added successfully!');
@@ -139,34 +149,48 @@ const AdminCarouselPage = () => {
             console.error("Error saving carousel:", error);
         }
     };
-
+    
     const handleEditCarousel = async () => {
         try {
             const token = localStorage.getItem("token");
             const formData = new FormData();
             formData.append("id", editingCarouselId);
             formData.append("title", newCarousel.title);
+    
+            // Only append the image if there is a new one uploaded
             if (newCarousel.image) {
                 formData.append("image", newCarousel.image);
             }
-
+    
+            // Log FormData contents to check if data is being appended correctly
+            for (let [key, value] of formData.entries()) {
+                console.log(`${key}: ${value}`);
+            }
+    
             const response = await axios.put("http://localhost:3000/admin/carousel/editcarousel", formData, {
                 headers: {
                     'auth-token': token,
                     "Content-Type": "multipart/form-data",
                 },
             });
-
+    
             const updatedCarousel = response.data.carouselItem;
-
+    
             if (updatedCarousel) {
+                // Merge preview URL if needed
+                const updatedCarouselWithPreview = {
+                    ...updatedCarousel,
+                    previewUrl: newCarousel.previewUrl,
+                };
+    
+                // Update carousels list with the edited carousel
                 setCarousels(prevCarousels =>
                     prevCarousels.map(carousel =>
-                        carousel._id === updatedCarousel._id ? updatedCarousel : carousel
+                        carousel._id === updatedCarousel._id ? updatedCarouselWithPreview : carousel
                     )
                 );
-
-                // Close the dialog and show success message
+    
+                // Close dialog and show success message
                 handleCloseDialog();
                 setSnackbarMessage('Carousel updated successfully!');
                 setSnackbarOpen(true);
@@ -175,6 +199,7 @@ const AdminCarouselPage = () => {
             console.log("Error editing the carousel:", error);
         }
     };
+    
 
     const handleDeleteCarousel = async (carouselId) => {
         try {
