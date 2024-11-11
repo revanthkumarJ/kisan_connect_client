@@ -16,7 +16,6 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
-import ProfileDrawer from "../utils/profileDrawer.jsx"
 
 const ProfilePage = () => {
   const { mode, logout } = useAuth();
@@ -27,7 +26,6 @@ const ProfilePage = () => {
   const [updatedUser, setUpdatedUser] = useState(null);
   const navigate = useNavigate();
 
-  // Define color schemes based on the mode
   const colors = {
     background: mode === 'dark' ? '#1E1E1E' : '#FFFFFF',
     text: mode === 'dark' ? '#FFFFFF' : '#000000',
@@ -108,10 +106,8 @@ const ProfilePage = () => {
   const formattedAddress = `${user.address.doorNo}, ${user.address.area}, ${user.address.district}, ${user.address.pincode} ${user.address.landmark}, ${user.address.state}`;
 
   return (
-
-
-    <Box sx={{ padding: '2rem', backgroundColor: colors.background ,height:"100vh"}}>
-      <Card sx={{  marginRight: '1rem', backgroundColor: colors.dialogBackground }}>
+    <Box sx={{ padding: '2rem', backgroundColor: colors.background, height: "100vh" }}>
+      <Card sx={{ marginRight: '1rem', backgroundColor: colors.dialogBackground }}>
         <CardContent>
           <Box sx={{ display: 'flex', alignItems: 'center', color: colors.text }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -174,7 +170,72 @@ const ProfilePage = () => {
                 sx={{ color: colors.text }}
               />
             </Grid>
-            {/* Add more fields as needed */}
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Door Number"
+                name="doorNo"
+                value={updatedUser?.address?.doorNo || ''}
+                onChange={handleInputChange}
+                InputLabelProps={{ style: { color: colors.text } }}
+                sx={{ color: colors.text }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Area"
+                name="area"
+                value={updatedUser?.address?.area || ''}
+                onChange={handleInputChange}
+                InputLabelProps={{ style: { color: colors.text } }}
+                sx={{ color: colors.text }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Landmark"
+                name="landmark"
+                value={updatedUser?.address?.landmark || ''}
+                onChange={handleInputChange}
+                InputLabelProps={{ style: { color: colors.text } }}
+                sx={{ color: colors.text }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="District"
+                name="district"
+                value={updatedUser?.address?.district || ''}
+                onChange={handleInputChange}
+                InputLabelProps={{ style: { color: colors.text } }}
+                sx={{ color: colors.text }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="State"
+                name="state"
+                value={updatedUser?.address?.state || ''}
+                onChange={handleInputChange}
+                InputLabelProps={{ style: { color: colors.text } }}
+                sx={{ color: colors.text }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Pincode"
+                name="pincode"
+                value={updatedUser?.address?.pincode || ''}
+                onChange={handleInputChange}
+                InputLabelProps={{ style: { color: colors.text } }}
+                sx={{ color: colors.text }}
+              />
+            </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
