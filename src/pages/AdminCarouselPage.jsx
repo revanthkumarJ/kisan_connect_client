@@ -12,12 +12,14 @@ import TextField from '@mui/material/TextField';
 import DialogContentText from '@mui/material/DialogContentText';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import {useAuth} from "./AuthContext.js";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
 const AdminCarouselPage = () => {
+    const { mode } = useAuth();
     const [carousels, setCarousels] = useState([]);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [newCarousel, setNewCarousel] = useState({
@@ -147,23 +149,23 @@ const AdminCarouselPage = () => {
             if (newCarousel.image) {
                 formData.append("image", newCarousel.image);
             }
-    
+
             const response = await axios.put("http://localhost:3000/admin/carousel/editcarousel", formData, {
                 headers: {
                     'auth-token': token,
                     "Content-Type": "multipart/form-data",
                 },
             });
-    
+
             const updatedCarousel = response.data.carouselItem;
-    
+
             if (updatedCarousel) {
-                setCarousels(prevCarousels => 
-                    prevCarousels.map(carousel => 
+                setCarousels(prevCarousels =>
+                    prevCarousels.map(carousel =>
                         carousel._id === updatedCarousel._id ? updatedCarousel : carousel
                     )
                 );
-    
+
                 // Close the dialog and show success message
                 handleCloseDialog();
                 setSnackbarMessage('Carousel updated successfully!');
@@ -173,7 +175,7 @@ const AdminCarouselPage = () => {
             console.log("Error editing the carousel:", error);
         }
     };
-    
+
     const handleDeleteCarousel = async (carouselId) => {
         try {
             const token = localStorage.getItem("token");
@@ -198,37 +200,55 @@ const AdminCarouselPage = () => {
         if (reason === 'clickaway') {
             return;
         }
-        setSnackbarOpen(false); 
+        setSnackbarOpen(false);
+    };
+
+    // Light and dark mode styles
+    const containerStyle = {
+        backgroundColor: mode === 'light' ? '#f5f5f5' : '#121212',
+        color: mode === 'light' ? '#000' : '#fff',
+        padding: '20px',
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',  // Aligning items in column layout
+    };
+
+    const dialogStyle = {
+        backgroundColor: mode === 'light' ? '#fff' : '#333',
+        color: mode === 'light' ? '#000' : '#fff',
+    };
+
+    const buttonStyle = {
+        backgroundColor: mode === 'light' ? '#1976d2' : '#90caf9',
+        color: '#fff',
     };
 
     return (
-        <div className="text-center font-bold text-lg my-5">
-            <div className="flex justify-between items-center px-5">
-                <div className="font-bold text-xl ml-[35rem]">
+        <div style={containerStyle}>
+            <div className="flex justify-between items-center px-5" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+                <div className="font-bold text-xl" style={{ textAlign: 'center', marginBottom: '20px' }}>
                     Manage Carousels
                 </div>
-                <Stack spacing={2} direction="row">
-                    <Button variant="contained" color="primary" onClick={() => handleOpenDialog()}>
-                        Add Carousel
-                    </Button>
-                </Stack>
+                <Button variant="contained" style={buttonStyle} onClick={() => handleOpenDialog()}>
+                    Add Carousel
+                </Button>
             </div>
 
-            {
-                carousels.map((carousel) => (
-                    <GetAllCarousels 
-                        key={carousel.id || carousel._id} 
-                        carousel={carousel} 
-                        onDelete={handleDeleteCarousel} 
+            <div style={{ flex: 1, overflowY: 'auto' }}>
+                {carousels.map((carousel) => (
+                    <GetAllCarousels
+                        key={carousel.id || carousel._id}
+                        carousel={carousel}
+                        onDelete={handleDeleteCarousel}
                         onEdit={() => handleOpenDialog(carousel)}
                     />
-                ))
-            }
+                ))}
+            </div>
 
-            <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
+            <Dialog open={isDialogOpen} onClose={handleCloseDialog} PaperProps={{ style: dialogStyle }}>
                 <DialogTitle>{editingCarouselId ? "Edit Carousel" : "Add New Carousel"}</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>
+                    <DialogContentText style={{ color: dialogStyle.color }}>
                         Please fill out the details for the carousel.
                     </DialogContentText>
                     <TextField
@@ -240,6 +260,7 @@ const AdminCarouselPage = () => {
                         name="title"
                         value={newCarousel.title}
                         onChange={handleInputChange}
+                        InputLabelProps={{ style: { color: dialogStyle.color } }}
                     />
                     <input
                         type="file"
@@ -248,21 +269,28 @@ const AdminCarouselPage = () => {
                         style={{ marginTop: '20px' }}
                     />
                     {newCarousel.previewUrl && (
-                        <img src={newCarousel.previewUrl} alt="Image Preview" style={{ marginTop: '10px', maxWidth: '100%' }} />
+                        <img
+                            src={newCarousel.previewUrl}
+                            alt="Preview"
+                            style={{ width: '100%', marginTop: '10px' }}
+                        />
                     )}
                 </DialogContent>
                 <DialogActions>
-                    <Button color="secondary" onClick={handleCloseDialog}>
+                    <Button onClick={handleCloseDialog} color="primary">
                         Cancel
                     </Button>
-                    <Button color="primary" onClick={editingCarouselId ? handleEditCarousel : handleSaveCarousel}>
-                        {editingCarouselId ? "Update" : "Save"}
+                    <Button
+                        onClick={editingCarouselId ? handleEditCarousel : handleSaveCarousel}
+                        color="primary"
+                    >
+                        {editingCarouselId ? 'Save Changes' : 'Add Carousel'}
                     </Button>
                 </DialogActions>
             </Dialog>
 
             <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
-                <Alert onClose={handleSnackbarClose} severity="success">
+                <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
                     {snackbarMessage}
                 </Alert>
             </Snackbar>

@@ -17,6 +17,9 @@ import DeliveryBoy from './pages/DeliveryBoy';
 import OnTheWayPage from './pages/OnTheWay';
 import DeliveredItemsPage from './pages/DeliveredItems';
 import AboutUsPage from './pages/About';
+import FarmerApplicationPage from './pages/FarmerRequests';
+import AdminPage from './pages/Admin';
+
 
 
 const App = () => {
@@ -41,11 +44,16 @@ const App = () => {
           <Route path="/product/:productName" element={<ProductDetailPage />} />  {/* Product detail page */}
           <Route path="/Farmer" element={<FarmerPage/>} />  {/* Product detail page */}
 
-          <Route path="/place-order" element={<PlaceOrderPage />} />
+          
           <Route path="/DeliveryBoy" element={<DeliveryBoy />} />
           <Route path="/OnTheWay" element={<OnTheWayPage />} />
           <Route path="/Delivered" element={<DeliveredItemsPage />} />
           <Route path="/AboutUs" element={<AboutUsPage />} />
+
+          <Route path="/ManageFarmerRequests" element={<FarmerApplicationPage />} />
+          <Route path="/Admin" element={<AdminPage />} />
+
+          
         </Routes>
       </Router>
     </AuthProvider>

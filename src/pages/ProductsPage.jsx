@@ -119,7 +119,11 @@ const ProductPage = () => {
             >
               <CardMedia
                 component="img"
-                height="140"
+                sx={{
+                  height: '140px', // Fixed height for the image
+                  objectFit: 'cover', // Ensures the image covers the space evenly
+                  width: '100%', // Ensures full width coverage of the card
+                }}
                 image={`data:image/jpeg;base64,${product.image}`}
                 alt={product.productName}
               />

@@ -67,7 +67,7 @@ const Navbar = () => {
               Admin Page
             </Button>
           ) : isFarmer ? (
-            <Button sx={{ color: 'white' }} component={Link} to="/my-products">
+            <Button sx={{ color: 'white' }} component={Link} to="/Farmer">
               My Products
             </Button>
           ) : isDeliveryBoy ? (
