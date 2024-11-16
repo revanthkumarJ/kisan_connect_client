@@ -58,6 +58,7 @@ const DeliveredItemsPage = () => {
       style={{
         padding: '20px',
         margin: '0 auto',
+        minHeight:'100vh',
         backgroundColor: mode === 'dark' ? '#121212' : '#f0f2f5',
         color: mode === 'dark' ? '#f5f5f5' : '#333',
       }}

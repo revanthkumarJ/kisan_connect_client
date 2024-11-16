@@ -154,7 +154,7 @@ const FarmerPage = () => {
     };
 
     return (
-        <div style={{ padding: "20px", backgroundColor: mode === 'dark' ? theme.palette.grey[900] : theme.palette.grey[100], color: mode === 'dark' ? 'white' : 'black' }}>
+        <div style={{ minHeight:"100vh",padding: "20px", backgroundColor: mode === 'dark' ? theme.palette.grey[900] : theme.palette.grey[100], color: mode === 'dark' ? 'white' : 'black' }}>
             <AppBar position="static" color="primary">
                 <Toolbar>
                     <Typography variant="h6" style={{ flexGrow: 1, color: mode === 'dark' ? 'white' : 'black' }}>

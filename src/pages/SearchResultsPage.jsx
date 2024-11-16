@@ -11,7 +11,6 @@ const SearchResults = () => {
   const location = useLocation();
   const query = new URLSearchParams(location.search).get('query');
   const navigate = useNavigate();
-
   const handleCardClick = (product) => {
     navigate(`/product/${product.productName}`, { state: { product } });
   };
@@ -40,6 +39,7 @@ const SearchResults = () => {
         padding: 3,
         backgroundColor: mode === 'dark' ? '#121212' : '#ffffff',
         color: mode === 'dark' ? '#ffffff' : '#000000',
+        minHeight:"1000vh"
       }}
     >
       <Typography variant="h4" gutterBottom sx={{ color: mode === 'dark' ? '#ffffff' : '#000000' }}>

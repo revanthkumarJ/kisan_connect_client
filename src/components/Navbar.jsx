@@ -14,7 +14,7 @@ const Navbar = () => {
   const { isLoggedIn, mode, toggle} = useAuth();
 
   // Determine the app bar color based on the location pathname
-  const appBarColor = location.pathname === '/' ? '#795548' : '#4CAF50';
+  const appBarColor ='#4CAF50';
 
   // Get user role from localStorage
   const user = JSON.parse(localStorage.getItem("user"));
@@ -61,25 +61,25 @@ const Navbar = () => {
             onChange={(e) => setSearchQuery(e.target.value)}
           />
 
-          {/* Role-based Navigation Button */}
-          {isAdmin ? (
-            <Button sx={{ color: 'white' }} component={Link} to="/admin">
+          {
+            isAdmin && (<Button sx={{ color: 'white' }} component={Link} to="/admin">
               Admin Page
-            </Button>
-          ) : isFarmer ? (
-            <Button sx={{ color: 'white' }} component={Link} to="/Farmer">
+            </Button>)
+          }
+          {
+            isFarmer ? (<Button sx={{ color: 'white' }} component={Link} to="/Farmer">
               My Products
-            </Button>
-          ) : isDeliveryBoy ? (
-            <Button sx={{ color: 'white' }} component={Link} to="/orders">
-              Orders
-            </Button>
-          ):isCustomer? (
-            <Button sx={{ color: 'white' }} component={Link} to="/become-seller">
+            </Button>):(<Button sx={{ color: 'white' }} component={Link} to="/become-seller">
               Become a Seller
-            </Button>
-          ):(<></>)
-        }
+            </Button>)
+          }
+          {
+            isDeliveryBoy && (<Button sx={{ color: 'white' }} component={Link} to="/DeliveryBoy">
+              Orders
+            </Button>)
+          }
+          
+        
 
           <Button sx={{ color: 'white' }} component={Link} to="/AboutUs">
             About Us
@@ -91,7 +91,7 @@ const Navbar = () => {
           </IconButton>
 
           {/* Login or Profile */}
-          {user ? (
+          {isLoggedIn ? (
             <IconButton sx={{ color: 'white' }} component={Link} to="/profile">
               <AccountCircleIcon />
             </IconButton>

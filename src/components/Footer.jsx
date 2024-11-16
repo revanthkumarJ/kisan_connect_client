@@ -4,7 +4,7 @@ import { Instagram, Facebook, YouTube, Twitter, LinkedIn } from '@mui/icons-mate
 
 const Footer = () => {
   return (
-    <Box sx={{ bgcolor: '#795548', color: 'white', p: 3, textAlign: 'center' }}>
+    <Box sx={{ bgcolor: '#4CAF50', color: 'white', p: 3, textAlign: 'center' }}>
       {/* Logo Section - Uncomment if a logo is available */}
       {/* <Box sx={{ mb: 2 }}>
         <img src="logo.png" alt="Kisan Connect Logo" style={{ height: '50px' }} />
