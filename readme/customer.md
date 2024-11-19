@@ -1,4 +1,5 @@
 ### Customer  
+
 The **Customer** interface is designed for users to explore and purchase agricultural products seamlessly. Below are the key screens and functionalities:
 
 1. **Home Screen**  
@@ -21,3 +22,13 @@ The **Customer** interface is designed for users to explore and purchase agricul
    - Displays items in the cart, items on the way, and delivered products.  
    - Includes click actions for better interaction and navigation.  
    - [Learn More](../readme/customer/orders.md)
+
+5. **Become a Farmer**  
+   - Customers who are interested in selling their agricultural products can become a **Farmer**.  
+   - By switching to the farmer interface, they can list their products and manage sales directly on the platform.  
+   - [Learn More](../readme/customer/become_farmer.md)
+
+6. **Profile**  
+   - Customers can view and edit their profile details, such as name, contact information, and address.  
+   - This allows users to keep their personal information up to date and manage their preferences on the platform.  
+   - [Learn More](../readme/customer/profile.md)

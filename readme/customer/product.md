@@ -18,7 +18,7 @@ The **Product** page allows customers to explore detailed information about spec
 - Appears when a customer opts to buy a product directly.  
 - Allows customers to review the order summary and confirm the purchase.   
 
-![Buy Now Page Example](../assets/buy_now_page.png)  
+![Buy Now Page Example](../assets/buy_now.png)  
 
 ---
 
