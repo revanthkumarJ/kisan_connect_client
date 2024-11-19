@@ -6,10 +6,21 @@ import { useAuth } from './AuthContext';
 
 // Importing images
 import RevanthImage from '../assets/revanth.jpeg';
-import SreekanthImage from '../assets/sreekanth.jpg';
-import RameshImage from '../assets/ramesh.jpg';
+import SreekanthImage from '../assets/sreekanth.jpeg';
+import RameshImage from '../assets/ramesh.jpeg';
 
 const developers = [
+  
+  {
+    name: 'T.Sreekanth',
+    role: 'Member',
+    expertise: 'Frontend Developer',
+    image: SreekanthImage,
+    socials: {
+      linkedin: 'https://www.linkedin.com/in/thota-srikanth-725757280/',
+      github: 'https://github.com/THOTA-SRIKANTH',
+    },
+  },
   {
     name: 'J.Revanth Kumar',
     role: 'Team Lead',
@@ -23,27 +34,14 @@ const developers = [
     },
   },
   {
-    name: 'T.Sreekanth',
-    role: 'Member',
-    expertise: 'Frontend Developer',
-    image: SreekanthImage,
-    socials: {
-      instagram: 'https://instagram.com/sreekanth',
-      linkedin: 'https://linkedin.com/in/sreekanth',
-      facebook: 'https://facebook.com/sreekanth',
-      github: 'https://github.com/sreekanth',
-    },
-  },
-  {
     name: 'B.Ramesh',
     role: 'Member',
     expertise: 'Frontend Developer',
     image: RameshImage,
     socials: {
-      instagram: 'https://instagram.com/ramesh',
-      linkedin: 'https://linkedin.com/in/ramesh',
-      facebook: 'https://facebook.com/ramesh',
-      github: 'https://github.com/ramesh',
+      instagram: 'https://www.instagram.com/invites/contact/?igsh=1s74dua05nqa9&utm_content=nc7q0jc',
+      linkedin: 'https://www.linkedin.com/in/bingi-ramesh-02b754280/',
+      github: 'https://github.com/Bingi-Ramesh',
     },
   },
 ];
@@ -141,15 +139,15 @@ const AboutUsPage = () => {
                     {dev.expertise}
                   </Typography>
                   <Box>
-                    <IconButton component="a" href={dev.socials.instagram} target="_blank" sx={{ color: '#E4405F', '&:hover': { color: '#C13584' } }}>
+                    {dev.socials?.instagram && (<IconButton component="a" href={dev.socials.instagram} target="_blank" sx={{ color: '#E4405F', '&:hover': { color: '#C13584' } }}>
                       <Instagram />
-                    </IconButton>
+                    </IconButton>)}
                     <IconButton component="a" href={dev.socials.linkedin} target="_blank" sx={{ color: '#0077B5', '&:hover': { color: '#005582' } }}>
                       <LinkedIn />
                     </IconButton>
-                    <IconButton component="a" href={dev.socials.facebook} target="_blank" sx={{ color: '#4267B2', '&:hover': { color: '#365899' } }}>
+                    {dev.socials?.facebook && (<IconButton component="a" href={dev.socials.facebook} target="_blank" sx={{ color: '#4267B2', '&:hover': { color: '#365899' } }}>
                       <Facebook />
-                    </IconButton>
+                    </IconButton>)}
                     <IconButton component="a" href={dev.socials.github} target="_blank" sx={{ color: '#333', '&:hover': { color: '#24292F' } }}>
                       <GitHub />
                     </IconButton>
