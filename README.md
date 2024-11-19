@@ -35,3 +35,14 @@ Kisan Connect is an innovative platform designed to bridge the gap between farme
 - **React**  
 - **Material UI**  
 
+---
+
+### Git Repositories
+
+1. **App (Android)**: The mobile application for **Kisan Connect**, designed for Android users (Farmers and Delivery Boys).  
+   - **Technologies**: Kotlin, Jetpack Compose  
+   - [GitHub Repo - Android App](https://github.com/revanthkumarJ/KisanConnectApp)
+
+2. **Backend**: The backend server that handles all the data management and communication between users.  
+   - **Technologies**: Express, Typescript  
+   - [GitHub Repo - Backend](https://github.com/revanthkumarJ/Kisan_connect_API)
