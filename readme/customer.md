@@ -4,6 +4,7 @@ The **Customer** interface is designed for users to explore and purchase agricul
 1. **Home Screen**  
    - Displays a dynamic carousel updated by the Admin.  
    - Features five rows of products with horizontal scrolling. Click on products to view images and detailed descriptions.  
+   - Includes a **search bar** for users to find their desired products quickly and efficiently.  
    - [Learn More](../readme/customer/home.md)
 
 2. **About Screen**  
